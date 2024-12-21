@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="signup">Signup</string>
+    <string name="login">Login</string>
+    <string name="login_title">Welcome to Story Universe👋</string>
+    <string name="title_welcome">Do you have an account?</string>
+    <string name="message_welcome">If you don\'t, click the Signup button.</string>
+    <string name="hint_username"> input your username here.</string>
+    <string name="hint_email"> input your email here.</string>
+    <string name="hint_password"> input your password here.</string>
+    <string name="et_password_error_message">Passwords must be at least 8 characters</string>
+    <string name="et_email_error_message">Email address is not valid</string>
+    <string name="error_username">Can\'t be less than 2 characters</string>
+    <string name="error_signup_input">you need to fill in the input first</string>
+    <string name="error_login_input">email or password is invalid</string>
+    <string name="email_taken">The email you entered is already registered, please change your email.</string>
+    <string name="create_account">Create Account</string>
+    <string name="user_name">Name: </string>
+    <string name="date_created">Date: </string>
+    <string name="homepage"> Homepage</string>
+    <string name="btn_floating">to create new content</string>
+    <string name="no_data">No data found</string>
+    <string name="no_image_data">Displayed if no data image</string>
+    <string name="error_loading">Load data failed. because of: </string>
+    <string name="share_button">Upload Your Story!</string>
+    <string name="share_story_as">Share your story as: </string>
+    <string name="btn_camera">Camera</string>
+    <string name="btn_gallery">Gallery</string>
+    <string name="detail_title">%1$s\'s Story</string>
+    <string name="choose_picture">Choose Picture</string>
+    <string name="logout">Logout</string>
+    <string name="language">Change Language</string>
+    <string name="refresh">Refresh</string>
+
+    <string name="post_as">Share story as </string>
+    <string name="post_users">Make your own story</string>
+    <string name="message">Message  :</string>
+
+    <string name="warning_add_image">You need to upload photo first</string>
+    <string name="warning_add_desc">You need to add description first</string>
+    <string name="logout_success">Logout Success</string>
+    <string name="logout_confirmation">Are you sure you want to log out?</string>
+    <string name="logout_cancel">Cancel</string>
+
+
+    <string name="package_name">com.example.storyapp</string>
+
+    <string name="useMyLocation">Use my location</string>
+    <string name="usePickLocation">Use the location that i pick</string>
+    <string name="pickLocation">Click map to pick location</string>
+    <string name="icon_map_pin">Icon map pin</string>
+    <string name="yourLocation">Your Location</string>
+    <string name="start_point">Start Point</string>
+    <string name="accountSuccessCreated">Yipi account successfully created</string>
+    <string name="tryAgain">Try Again</string>
+    <string name="locationNotFound">Location is not found. Try Again</string>
+
+    <string name="useThisLocation">Use this location?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="maps">Look at map</string>
+
+    <string name="standardMap">Standard Map</string>
+    <string name="nightMap">Night mode map</string>
+
+
+
+    <string name="press_again_to_exit">Press again to exit</string>
+    <string name="person_with_paper_illustration">Person with paper illustration</string>
+    <string name="login_message">You can view stories from Dicoding users through our app! 📝</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="signup_title">Let\'s create an account!</string>
+    <string name="signup_message">New to this application? \nLet\'s create an account for you ✨</string>
+    <string name="full_name">Full name</string>
+    <string name="signup_error_message">Registration failed, please try again.</string>
+    <string name="signup_success">Registration success</string>
+    <string name="login_error_message">Login failed, please try again.</string>
+    <string name="login_success_message">Login success</string>
+    <string name="dummy_name" translatable="false">Fikri Yusrihan</string>
+    <string name="dummy_description" translatable="false">Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsu....</string>
+    <string name="dummy_date" translatable="false">April 6, 2022</string>
+    <string name="story_s_illustration">Story\'s illustration</string>
+    <string name="stories">Stories</string>
+    <string name="create_story">Create story</string>
+    <string name="error_occurred_message">An error occurred</string>
+    <string name="story_illustration">Story illustration</string>
+    <string name="detail_toolbar_title">%s\'s story</string>
+    <string name="nodata">No data</string>
+    <string name="stories_not_found_error">Stories not found</string>
+    <string name="add_story_title">Add Story</string>
+    <string name="upload_story">Upload Story</string>
+    <string name="person_with_computer">Person with computer</string>
+    <string name="select_image">Select image from</string>
+    <string name="select_from_camera">Camera</string>
+    <string name="select_from_gallery">Gallery</string>
+    <string name="write_a_description">Write a description</string>
+    <string name="desc_empty_field_error">Please fill the description field</string>
+    <string name="empty_image_error">Please select an image</string>
+    <string name="image_upload_failed">Story upload failed</string>
+    <string name="story_upload">Story uploaded</string>
+    <string name="language_setting">Language Setting</string>
+    <string name="title_activity_home" translatable="false">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="setting">Setting</string>
+    <string name="location">Location</string>
+    <string name="share_location">Share location</string>
+    <string name="location_permission_denied">Location permission not allowed</string>
+    <string name="location_permission_denied_action">Change Setting</string>
+    <string name="retry">Retry</string>
+    <string name="loading_error_message">Unable to fetch stories data</string>
+    <string name="logout_dialog_title">Are you sure?</string>
+    <string name="logout_dialog_message">You need to login again after logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout_message_success">Logged out successfully</string>
+    <string name="please_activate_location_message">Please activate your location services</string>
+</resources>

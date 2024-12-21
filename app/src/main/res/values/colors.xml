@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="navy">#2D3D4F</color>
+
+    <color name="grey">#393646</color>
+    <color name="button">#3C486B</color>
+
+    <color name="purple_100">#F3DCF8</color>
+    <color name="purple_200">#E4BAF2</color>
+    <color name="purple_300">#C28EDA</color>
+    <color name="purple_400">#9866B5</color>
+    <color name="purple_500">#643885</color>
+    <color name="purple_600">#4E2872</color>
+    <color name="purple_700">#3B1C5F</color>
+    <color name="purple_800">#1D0A3F</color>
+
+    <color name="wordColor">#494242</color>
+    <color name="buttonColor">#6A7073</color>
+
+    <style name="ProgressBarStyle">
+        <item name="colorAccent">#C7F9CC</item>
+    </style>
+</resources>
