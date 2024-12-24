@@ -3,6 +3,7 @@
     <string name="signup">Signup</string>
     <string name="login">Login</string>
     <string name="login_title">Welcome to Story Universe👋</string>
+
     <string name="title_welcome">Do you have an account?</string>
     <string name="message_welcome">If you don\'t, click the Signup button.</string>
     <string name="hint_username"> input your username here.</string>
@@ -14,10 +15,13 @@
     <string name="error_signup_input">you need to fill in the input first</string>
     <string name="error_login_input">email or password is invalid</string>
     <string name="email_taken">The email you entered is already registered, please change your email.</string>
+
     <string name="create_account">Create Account</string>
     <string name="user_name">Name: </string>
     <string name="date_created">Date: </string>
+
     <string name="homepage"> Homepage</string>
+
     <string name="btn_floating">to create new content</string>
     <string name="no_data">No data found</string>
     <string name="no_image_data">Displayed if no data image</string>
@@ -42,23 +46,23 @@
     <string name="logout_confirmation">Are you sure you want to log out?</string>
     <string name="logout_cancel">Cancel</string>
 
-    <string name="nameNone">Name Is Empty</string>
-    <string name="emailNone">Email Is Empty</string>
-    <string name="passwordNone">Fill The Password</string>
+    <string name="name_empty">Name Is Empty</string>
+    <string name="email_empty">Email Is Empty</string>
+    <string name="password_empty">Fill The Password</string>
 
     <string name="package_name">com.example.storyapp</string>
 
-    <string name="useMyLocation">Use my current location</string>
-    <string name="usePickLocation">Use the location I\'ve selected</string>
-    <string name="pickLocation">Hint: Click map to pick your location</string>
+    <string name="use_current_location">Use my current location</string>
+    <string name="use_pick_location">Use the location I\'ve selected</string>
+    <string name="pick_location_hint">Hint: Click map to pick your location</string>
     <string name="icon_map_pin">Icon map pin</string>
-    <string name="yourLocation">Choose Your Location</string>
+    <string name="choose_your_location">Choose Your Location</string>
     <string name="start_point">Start Point</string>
-    <string name="accountSuccessCreated">Yipi account successfully created</string>
-    <string name="tryAgain">Try Again</string>
-    <string name="locationNotFound">Location is not found. Try Again</string>
+    <string name="account_created">Your account has successfully created</string>
+    <string name="retry">Try Again</string>
+    <string name="locatiob_not_found">Location is not found. Try Again</string>
 
-    <string name="useThisLocation">Use this location?</string>
+    <string name="use_this_location">Use this location?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -71,5 +75,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="full_name">Full name</string>
+
+    <string name="searchbar_hint">input text...</string>
 
 </resources>

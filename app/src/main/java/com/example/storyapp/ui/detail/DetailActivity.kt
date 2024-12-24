@@ -30,9 +30,9 @@ class DetailActivity : AppCompatActivity() {
         Glide.with(this)
             .load(story.photoUrl)
             .placeholder(R.drawable.ic_launcher_foreground)
-            .into(binding.imageDetailStory)
+            .into(binding.ivStoryDetailImage)
 
-        binding.tvAddress.text = LocationConverter.getStringAddress(
+        binding.tvLocationAddress.text = LocationConverter.getStringAddress(
             LocationConverter.toLatlng(story.lat, story.lon),
             this
         )

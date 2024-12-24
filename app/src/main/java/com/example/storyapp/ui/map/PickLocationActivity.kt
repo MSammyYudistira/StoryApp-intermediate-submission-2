@@ -35,8 +35,8 @@ class PickLocationActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding = ActivityPickLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        updateButtonStyle(binding.myLocation, false)
-        updateButtonStyle(binding.locationPick, false)
+        updateButtonStyle(binding.btnMyLocation, false)
+        updateButtonStyle(binding.btnPickLocation, false)
         setupAction()
 
         val mapFragment = supportFragmentManager
@@ -65,7 +65,7 @@ class PickLocationActivity : AppCompatActivity(), OnMapReadyCallback {
             )
             mMap.animateCamera(location)
             mMap.addMarker(markerOptions)
-            updateButtonStyle(binding.locationPick, true)
+            updateButtonStyle(binding.btnPickLocation, true)
         }
     }
 
@@ -108,14 +108,14 @@ class PickLocationActivity : AppCompatActivity(), OnMapReadyCallback {
                         location.latitude,
                         location.longitude
                     )
-                    updateButtonStyle(binding.myLocation, true)
+                    updateButtonStyle(binding.btnMyLocation, true)
                     mMap.isMyLocationEnabled = true
                     showStartMarker(location)
                 } else {
-                    updateButtonStyle(binding.myLocation, false)
+                    updateButtonStyle(binding.btnMyLocation, false)
                     Toast.makeText(
                         this@PickLocationActivity,
-                        resources.getString(R.string.locationNotFound),
+                        resources.getString(R.string.locatiob_not_found),
                         Toast.LENGTH_SHORT
                     ).show()
                     mMap.moveCamera(
@@ -144,11 +144,11 @@ class PickLocationActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setupAction() {
-        binding.myLocation.setOnClickListener {
+        binding.btnMyLocation.setOnClickListener {
             showAlertDialog(currentLagLng)
         }
 
-        binding.locationPick.setOnClickListener {
+        binding.btnPickLocation.setOnClickListener {
             showAlertDialog(pickedPlace)
         }
     }
@@ -158,7 +158,7 @@ class PickLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         val builder = AlertDialog.Builder(this)
         val alert = builder.create()
         builder
-            .setTitle(resources.getString(R.string.useThisLocation))
+            .setTitle(resources.getString(R.string.use_this_location))
             .setMessage(address)
             .setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                 returnLocationResult(address, latlng)

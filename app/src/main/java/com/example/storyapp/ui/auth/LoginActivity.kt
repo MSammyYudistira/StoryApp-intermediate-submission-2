@@ -65,14 +65,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.loginButton.setOnClickListener {
-           binding.edLoginEmail.clearFocus()
-            binding.edLoginPassword.clearFocus()
+        binding.btnLogin.setOnClickListener {
+           binding.edEmailLogin.clearFocus()
+            binding.edPasswordLogin.clearFocus()
 
             if (isDataValid()) {
                 val requestLogin = LoginData(
-                    email = binding.edLoginEmail.text.toString().trim(),
-                    password = binding.edLoginPassword.text.toString().trim()
+                    email = binding.edEmailLogin.text.toString().trim(),
+                    password = binding.edPasswordLogin.text.toString().trim()
                 )
                 viewModel.login(requestLogin)
             } else {
@@ -83,24 +83,24 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun playAnimation() {
-        ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
+        ObjectAnimator.ofFloat(binding.ivLogin, View.TRANSLATION_X, -30f, 30f).apply {
             duration = 6000
             repeatCount = ObjectAnimator.INFINITE
             repeatMode = ObjectAnimator.REVERSE
         }.start()
 
-        val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(100)
+        val title = ObjectAnimator.ofFloat(binding.tvTitle, View.ALPHA, 1f).setDuration(100)
         val message =
-            ObjectAnimator.ofFloat(binding.messageTextView, View.ALPHA, 1f).setDuration(100)
+            ObjectAnimator.ofFloat(binding.tvMessage, View.ALPHA, 1f).setDuration(100)
         val emailTextView =
-            ObjectAnimator.ofFloat(binding.emailTextView, View.ALPHA, 1f).setDuration(100)
+            ObjectAnimator.ofFloat(binding.tvEmail, View.ALPHA, 1f).setDuration(100)
         val emailEditTextLayout =
-            ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.ALPHA, 1f).setDuration(100)
+            ObjectAnimator.ofFloat(binding.tlEmail, View.ALPHA, 1f).setDuration(100)
         val passwordTextView =
-            ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(100)
+            ObjectAnimator.ofFloat(binding.tvPassword, View.ALPHA, 1f).setDuration(100)
         val passwordEditTextLayout =
-            ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(100)
-        val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(100)
+            ObjectAnimator.ofFloat(binding.tlPassword, View.ALPHA, 1f).setDuration(100)
+        val login = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(100)
 
         AnimatorSet().apply {
             playSequentially(
@@ -136,11 +136,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun isDataValid(): Boolean {
-        return binding.edLoginEmail.isEmailValid && binding.edLoginPassword.isPasswordValid
+        return binding.edEmailLogin.isEmailValid && binding.edPasswordLogin.isPasswordValid
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.pbLogin.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
 }

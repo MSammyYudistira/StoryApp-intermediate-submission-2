@@ -26,10 +26,10 @@ class StoryListAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ListStoryDetail) {
 
-            binding.authorStory.text = "From: ${data.name}"
+            binding.tvAuthorName.text = "From: ${data.name}"
             Glide.with(itemView.context)
                 .load(data.photoUrl)
-                .into(binding.imageStory)
+                .into(binding.ivListStory)
 
             binding.root.setOnClickListener {
                 onItemClickCallback.onItemClicked(data)

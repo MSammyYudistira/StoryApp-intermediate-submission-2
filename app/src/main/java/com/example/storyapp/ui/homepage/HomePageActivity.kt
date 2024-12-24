@@ -51,16 +51,20 @@ class HomePageActivity : AppCompatActivity() {
             token = it
             setUserData(it)
         }
+
+        with(binding) {
+            searchBar
+        }
     }
 
     private fun setupAction() {
-        binding.btnFloating.setOnClickListener {
+        binding.btnAddStory.setOnClickListener {
             startActivity(Intent(this, PostStoryActivity::class.java))
         }
 
-        binding.pullRefresh.setOnRefreshListener {
+        binding.swipeRefresh.setOnRefreshListener {
             viewModel.getStories(token)
-            binding.pullRefresh.isRefreshing = false
+            binding.swipeRefresh.isRefreshing = false
         }
 
         binding.btnLogout.setOnClickListener {

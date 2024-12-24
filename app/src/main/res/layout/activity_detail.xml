@@ -11,18 +11,6 @@
         tools:context=".ui.detail.DetailActivity"
         android:paddingBottom="10dp">
 
-        <ImageView
-            android:id="@+id/ivStoryDetailImage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/desc_border"
-            app:layout_constraintEnd_toEndOf="@+id/tvDetailDesc"
-            app:layout_constraintStart_toStartOf="@+id/tvDetailDesc"
-            app:layout_constraintTop_toBottomOf="@+id/tvDetailDesc"
-            app:srcCompat="@drawable/ic_launcher_background" />
-
         <TextView
             android:id="@+id/tvDetailName"
             android:layout_width="0dp"
@@ -50,7 +38,21 @@
             tools:text="Deskripsi Story" />
 
         <ImageView
-            android:id="@+id/ivSignup"
+            android:id="@+id/ivStoryDetailImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/desc_border"
+            android:contentDescription="Showing detail image"
+            app:layout_constraintEnd_toEndOf="@+id/tvDetailDesc"
+            app:layout_constraintStart_toStartOf="@+id/tvDetailDesc"
+            app:layout_constraintTop_toBottomOf="@+id/tvDetailDesc"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+
+        <ImageView
+            android:id="@+id/ivPinLocationIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/tvLocationAddress"
@@ -69,7 +71,7 @@
             tools:text="No Location Address"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/ivStoryDetailImage"
-            app:layout_constraintStart_toEndOf="@+id/ivSignup"
+            app:layout_constraintStart_toEndOf="@+id/ivPinLocationIcon"
             app:layout_constraintTop_toBottomOf="@+id/ivStoryDetailImage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

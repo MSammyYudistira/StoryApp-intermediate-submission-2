@@ -73,7 +73,7 @@ class PostStoryActivity : AppCompatActivity() {
         }
 
         dataStoreViewModel.getName().observe(this) {
-            binding.tvUsers.text = StringBuilder(getString(R.string.post_as)).append(" ").append(it)
+            binding.tvUser.text = StringBuilder(getString(R.string.post_as)).append(" ").append(it)
         }
 
         viewModel.message.observe(this) {
@@ -95,8 +95,8 @@ class PostStoryActivity : AppCompatActivity() {
             getFile = myFile
             val result = BitmapFactory.decodeFile(myFile.path)
             anyPhoto = true
-            binding.imageStoryUpload.setImageBitmap(result)
-            binding.tvDes.requestFocus()
+            binding.ivShowImage.setImageBitmap(result)
+            binding.edDescription.requestFocus()
         }
     }
 
@@ -147,8 +147,8 @@ class PostStoryActivity : AppCompatActivity() {
             val selectedImg: Uri = result.data?.data as Uri
             val myFile = uriToFile(selectedImg, this@PostStoryActivity)
             getFile = myFile
-            binding.imageStoryUpload.setImageURI(selectedImg)
-            binding.tvDes.requestFocus()
+            binding.ivShowImage.setImageURI(selectedImg)
+            binding.edDescription.requestFocus()
         }
     }
 
@@ -184,22 +184,22 @@ class PostStoryActivity : AppCompatActivity() {
                     val lng = data.getDoubleExtra("lng", 0.0)
                     latlng = LatLng(lat, lng)
 
-                    binding.detailLocation.text = address
+                    binding.tvChooseLocation.text = address
                 }
             }
         }
 
     private fun setupAction() {
-        binding.btnPostStory.setOnClickListener {
+        binding.btnUploadYourStory.setOnClickListener {
 
             if (getFile == null) {
                 showToast(resources.getString(R.string.warning_add_image))
                 return@setOnClickListener
             }
 
-            val des = binding.tvDes.text.toString().trim()
+            val des = binding.edDescription.text.toString().trim()
             if (des.isEmpty()) {
-                binding.tvDes.error = resources.getString(R.string.warning_add_desc)
+                binding.edDescription.error = resources.getString(R.string.warning_add_desc)
                 return@setOnClickListener
             }
 
@@ -237,15 +237,15 @@ class PostStoryActivity : AppCompatActivity() {
             }
         }
 
-        binding.cameraButton.setOnClickListener {
+        binding.btnCamera.setOnClickListener {
             startTakePhoto()
         }
 
-        binding.galleryButton.setOnClickListener {
+        binding.btnGallery.setOnClickListener {
             startGallery()
         }
 
-        binding.llLocation.setOnClickListener {
+        binding.linearLayoutLocation.setOnClickListener {
             val intent = Intent(this, PickLocationActivity::class.java)
             resultLauncher.launch(intent)
         }
@@ -258,7 +258,7 @@ class PostStoryActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressBarAddStory.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.pbPostStory.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {

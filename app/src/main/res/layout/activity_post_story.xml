@@ -11,16 +11,6 @@
         android:layout_height="wrap_content"
         android:paddingBottom="30dp">
 
-        <Button
-            android:id="@+id/btnUploadYourStory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/share_button"
-            android:backgroundTint="@color/purple_500"
-            app:layout_constraintEnd_toEndOf="@+id/edDescription"
-            app:layout_constraintStart_toStartOf="@+id/edDescription"
-            app:layout_constraintTop_toBottomOf="@+id/edDescription" />
 
         <TextView
             android:id="@+id/tvUser"
@@ -99,7 +89,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
             android:maxLines="3"
-            android:text="@string/yourLocation" />
+            android:text="@string/choose_your_location" />
 
         </LinearLayout>
 
@@ -121,6 +111,17 @@
             app:layout_constraintStart_toStartOf="@+id/ivShowImage"
             app:layout_constraintTop_toBottomOf="@+id/btnCamera"
             tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/btnUploadYourStory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/share_button"
+            android:backgroundTint="@color/purple_500"
+            app:layout_constraintEnd_toEndOf="@+id/edDescription"
+            app:layout_constraintStart_toStartOf="@+id/edDescription"
+            app:layout_constraintTop_toBottomOf="@+id/edDescription" />
 
         <ProgressBar
             android:id="@+id/pbPostStory"

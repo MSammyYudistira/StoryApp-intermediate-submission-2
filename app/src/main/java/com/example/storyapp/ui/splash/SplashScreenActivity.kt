@@ -32,7 +32,7 @@ class SplashScreenActivity : AppCompatActivity() {
                 if (isLoggedIn) HomePageActivity::class.java else WelcomeActivity::class.java
             )
 
-            binding.imageView.animate()
+            binding.ivSplash.animate()
                 .setDuration(1000)
                 .alpha(1f)
                 .withEndAction {
