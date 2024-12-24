@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 import com.example.storyapp.R
 import com.example.storyapp.data.local.entity.ListStoryDetail
 import com.example.storyapp.databinding.ActivityDetailBinding
-import com.example.storyapp.helper.LocationConverter
+import com.example.storyapp.utils.LocationConverter
 
 class DetailActivity : AppCompatActivity() {
 

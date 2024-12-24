@@ -10,15 +10,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
-import com.example.storyapp.data.pref.UserPreference
 import com.example.storyapp.data.remote.response.LoginData
 import com.example.storyapp.data.remote.response.SignupData
 import com.example.storyapp.databinding.ActivitySignUpBinding
-import com.example.storyapp.ui.ViewModelFactory
 import com.example.storyapp.ui.homepage.HomePageActivity
-import com.example.storyapp.ui.viewmodel.DataStoreViewModel
-import com.example.storyapp.ui.viewmodel.MainViewModel
-import com.example.storyapp.ui.viewmodel.MainViewModelFactory
 
 class SignupActivity : AppCompatActivity() {
 

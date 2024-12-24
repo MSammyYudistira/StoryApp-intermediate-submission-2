@@ -6,35 +6,35 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.storyapp.data.local.entity.ListStoryDetail
-import com.example.storyapp.data.remote.repository.MainRepository
-import com.example.storyapp.data.remote.response.LoginData
-import com.example.storyapp.data.remote.response.LoginResponse
-import com.example.storyapp.data.remote.response.SignupData
+import com.example.storyapp.data.contract.RemoteDataRepository
+import com.example.storyapp.data.local.room.entity.StoryEntity
+import com.example.storyapp.data.remote.dto.request.LoginRequest
+import com.example.storyapp.data.remote.dto.request.SignUpRequest
+import com.example.storyapp.data.remote.dto.response.LoginResponseDto
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
+class MainViewModel(private val remoteDataRepositoryImpl: RemoteDataRepository) : ViewModel() {
 
-    val stories: LiveData<List<ListStoryDetail>> = mainRepository.stories
+    val stories: LiveData<List<StoryEntity>> = remoteDataRepositoryImpl.stories
 
-    val message: LiveData<String> = mainRepository.message
+    val message: LiveData<String> = remoteDataRepositoryImpl.message
 
-    val isLoading: LiveData<Boolean> = mainRepository.isLoading
+    val isLoading: LiveData<Boolean> = remoteDataRepositoryImpl.isLoading
 
-    val userlogin: LiveData<LoginResponse> = mainRepository.userlogin
+    val userlogin: LiveData<LoginResponseDto> = remoteDataRepositoryImpl.userLogin
 
-    fun login(loginData: LoginData) {
+    fun login(loginRequest: LoginRequest) {
         viewModelScope.launch {
-        mainRepository.getLoginResponse(loginData)
-    }
+            remoteDataRepositoryImpl.login(loginRequest)
+        }
     }
 
-    fun signup(signupData: SignupData) {
+    fun signup(signupRequest: SignUpRequest) {
         viewModelScope.launch {
-        mainRepository.getResponseRegister(signupData)
-    }
+            remoteDataRepositoryImpl.register(signupRequest)
+        }
     }
 
     fun upload(
@@ -45,16 +45,18 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         token: String
     ) {
         viewModelScope.launch {
-        mainRepository.upload(photo, des, lat, lng, token)
-    }
+            remoteDataRepositoryImpl.upload(photo, des, lat, lng, token)
+        }
     }
 
     @ExperimentalPagingApi
-    fun getPagingStories(token: String): LiveData<PagingData<ListStoryDetail>> {
-        return mainRepository.getPagingStories(token).cachedIn(viewModelScope)
+    fun getPagingStories(token: String): LiveData<PagingData<StoryEntity>> {
+        return remoteDataRepositoryImpl.getPagingStories(token).cachedIn(viewModelScope)
     }
 
     fun getStories(token: String) {
-        mainRepository.getStories(token)
+        viewModelScope.launch {
+            remoteDataRepositoryImpl.getStories(token)
+        }
     }
 }

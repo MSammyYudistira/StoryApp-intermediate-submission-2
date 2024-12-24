@@ -18,15 +18,10 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.storyapp.R
-import com.example.storyapp.data.pref.UserPreference
 import com.example.storyapp.databinding.ActivityPostStoryBinding
-import com.example.storyapp.ui.ViewModelFactory
 import com.example.storyapp.ui.auth.dataStore
 import com.example.storyapp.ui.homepage.HomePageActivity
 import com.example.storyapp.ui.map.PickLocationActivity
-import com.example.storyapp.ui.viewmodel.DataStoreViewModel
-import com.example.storyapp.ui.viewmodel.MainViewModel
-import com.example.storyapp.ui.viewmodel.MainViewModelFactory
 import com.google.android.gms.maps.model.LatLng
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.Dispatchers

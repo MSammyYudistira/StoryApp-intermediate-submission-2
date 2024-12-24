@@ -7,14 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
 import com.example.storyapp.data.local.entity.ListStoryDetail
-import com.example.storyapp.data.pref.UserPreference
 import com.example.storyapp.databinding.ActivityMapBinding
-import com.example.storyapp.helper.LocationConverter
-import com.example.storyapp.ui.ViewModelFactory
+import com.example.storyapp.utils.LocationConverter
 import com.example.storyapp.ui.auth.dataStore
-import com.example.storyapp.ui.viewmodel.DataStoreViewModel
-import com.example.storyapp.ui.viewmodel.MainViewModel
-import com.example.storyapp.ui.viewmodel.MainViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

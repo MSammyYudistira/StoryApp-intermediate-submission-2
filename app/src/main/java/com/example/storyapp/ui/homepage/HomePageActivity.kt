@@ -2,6 +2,7 @@ package com.example.storyapp.ui.homepage
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -11,18 +12,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storyapp.R
 import com.example.storyapp.data.local.entity.ListStoryDetail
-import com.example.storyapp.data.pref.UserPreference
 import com.example.storyapp.databinding.ActivityHomepageBinding
-import com.example.storyapp.ui.ViewModelFactory
 import com.example.storyapp.ui.adapter.LoadingStateAdapter
 import com.example.storyapp.ui.adapter.StoryListAdapter
 import com.example.storyapp.ui.auth.LoginActivity
 import com.example.storyapp.ui.auth.dataStore
 import com.example.storyapp.ui.detail.DetailActivity
 import com.example.storyapp.ui.story.PostStoryActivity
-import com.example.storyapp.ui.viewmodel.DataStoreViewModel
-import com.example.storyapp.ui.viewmodel.MainViewModel
-import com.example.storyapp.ui.viewmodel.MainViewModelFactory
 
 class HomePageActivity : AppCompatActivity() {
     private val preference = UserPreference.getInstance(dataStore)
@@ -53,7 +49,19 @@ class HomePageActivity : AppCompatActivity() {
         }
 
         with(binding) {
-            searchBar
+            searchView.setupWithSearchBar(searchBar)
+            searchView
+                .editText
+                .setOnEditorActionListener { view, i, keyEvent ->
+                    when(i) {
+                        EditorInfo.IME_ACTION_SEARCH -> {
+                            searchBar.setText(searchView.text)
+                            viewModel.getStories(searchView.text.toString())
+                            searchView.hide()
+                        }
+                    }
+                    false
+                }
         }
     }
 

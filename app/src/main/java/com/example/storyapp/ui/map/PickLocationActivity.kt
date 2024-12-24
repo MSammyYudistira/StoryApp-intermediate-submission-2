@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.storyapp.R
 import com.example.storyapp.databinding.ActivityPickLocationBinding
-import com.example.storyapp.helper.LocationConverter
+import com.example.storyapp.utils.LocationConverter
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory

@@ -1,4 +1,4 @@
-package com.example.storyapp.data.remote.repository
+package com.example.storyapp.data.remote.mediator
 
 import android.util.Log
 import androidx.paging.ExperimentalPagingApi
@@ -6,17 +6,16 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.example.storyapp.data.local.entity.ListStoryDetail
-import com.example.storyapp.data.local.entity.RemoteKeys
-import com.example.storyapp.data.local.room.StoryDatabase
-import com.example.storyapp.data.remote.retrofit.ApiService
+import com.example.storyapp.data.local.room.entity.StoryEntity
+import com.example.storyapp.data.local.room.entity.KeyEntity
+import com.example.storyapp.data.remote.ApiService
 
 @OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(
     private val database: StoryDatabase,
     private val apiService: ApiService,
     token: String
-) : RemoteMediator<Int, ListStoryDetail>() {
+) : RemoteMediator<Int, StoryEntity>() {
     var token: String? = token
 
     private companion object {
@@ -31,7 +30,7 @@ class StoryRemoteMediator(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, ListStoryDetail>
+        state: PagingState<Int, StoryEntity>
     ): MediatorResult {
         val page = when (loadType) {
             LoadType.REFRESH -> {
@@ -53,7 +52,7 @@ class StoryRemoteMediator(
         }
 
         try {
-            val data: List<ListStoryDetail>
+            val data: List<StoryEntity>
             val responseData =
                 apiService.getAllStories(page, state.config.pageSize, LOCATION, "Bearer $token")
 
@@ -68,7 +67,7 @@ class StoryRemoteMediator(
                 val prevKey = if (page == 1) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
                 val keys = data.map {
-                    RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
+                    KeyEntity(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 database.getRemoteKeysDao().insertAll(keys)
                 database.getListStoryDetailDao().insertStory(data)
@@ -81,19 +80,19 @@ class StoryRemoteMediator(
         }
     }
 
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, ListStoryDetail>): RemoteKeys? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, StoryEntity>): KeyEntity? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { data ->
             database.getRemoteKeysDao().getRemoteKeysId(data.id)
         }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, ListStoryDetail>): RemoteKeys? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, StoryEntity>): KeyEntity? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { data ->
             database.getRemoteKeysDao().getRemoteKeysId(data.id)
         }
     }
 
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, ListStoryDetail>): RemoteKeys? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, StoryEntity>): KeyEntity? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { id ->
                 database.getRemoteKeysDao().getRemoteKeysId(id)

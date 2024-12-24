@@ -2,10 +2,9 @@ package com.example.storyapp.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.storyapp.data.pref.UserPreference
-import com.example.storyapp.ui.viewmodel.DataStoreViewModel
+import com.example.storyapp.data.contract.UserPreferencesRepository
 
-class ViewModelFactory(private val pref: UserPreference) :
+class ViewModelFactory(private val pref: UserPreferencesRepository) :
     ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

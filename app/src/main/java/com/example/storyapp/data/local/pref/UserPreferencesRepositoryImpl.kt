@@ -1,54 +1,57 @@
-package com.example.storyapp.data.pref
+package com.example.storyapp.data.local.pref
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.example.storyapp.data.contract.UserPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
+class UserPreferencesRepositoryImpl private constructor(
+    private val dataStore: DataStore<Preferences>
+): UserPreferencesRepository {
 
-    fun getLoginSession(): Flow<Boolean> {
+    override fun getLoginSession(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
             preferences[LOGIN_SESSION] ?: false
         }
     }
 
-    suspend fun saveLoginSession(loginSession: Boolean) {
+    override suspend fun saveLoginSession(loginSession: Boolean) {
         dataStore.edit { preferences ->
             preferences[LOGIN_SESSION] = loginSession
         }
     }
 
-    fun getToken(): Flow<String> {
+    override fun getToken(): Flow<String> {
         return dataStore.data.map { preferences ->
             preferences[TOKEN] ?: ""
         }
     }
 
 
-    suspend fun saveToken(token: String) {
+    override suspend fun saveToken(token: String) {
         dataStore.edit { preferences ->
             preferences[TOKEN] = token
         }
     }
 
-    fun getName(): Flow<String> {
+    override fun getName(): Flow<String> {
         return dataStore.data.map { preferences ->
             preferences[NAME] ?: ""
         }
     }
 
 
-    suspend fun saveName(name: String) {
+    override suspend fun saveName(name: String) {
         dataStore.edit { preferences ->
             preferences[NAME] = name
         }
     }
 
-    suspend fun clearDataLogin() {
+    override suspend fun clearDataLogin() {
         dataStore.edit { preferences ->
             preferences.remove(LOGIN_SESSION)
             preferences.remove(TOKEN)
@@ -58,11 +61,11 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
 
     companion object {
         @Volatile
-        private var INSTANCE: UserPreference? = null
+        private var INSTANCE: UserPreferencesRepositoryImpl? = null
 
-        fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
+        fun getInstance(dataStore: DataStore<Preferences>): UserPreferencesRepositoryImpl {
             return INSTANCE ?: synchronized(this) {
-                val instance = UserPreference(dataStore)
+                val instance = UserPreferencesRepositoryImpl(dataStore)
                 INSTANCE = instance
                 instance
             }

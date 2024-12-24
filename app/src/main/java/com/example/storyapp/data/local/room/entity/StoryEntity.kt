@@ -1,4 +1,4 @@
-package com.example.storyapp.data.local.entity
+package com.example.storyapp.data.local.room.entity
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "stories")
-data class ListStoryDetail(
+data class StoryEntity(
 
     @PrimaryKey
     @ColumnInfo(name = "id")

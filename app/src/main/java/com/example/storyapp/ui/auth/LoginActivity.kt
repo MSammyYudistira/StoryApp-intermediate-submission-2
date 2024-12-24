@@ -13,8 +13,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
-import com.example.storyapp.data.pref.UserPreference
-import com.example.storyapp.data.remote.response.LoginData
+import com.example.storyapp.data.local.pref.UserPreferencesRepositoryImpl
+import com.example.storyapp.data.remote.dto.request.LoginRequest
 import com.example.storyapp.databinding.ActivityLoginBinding
 import com.example.storyapp.ui.ViewModelFactory
 import com.example.storyapp.ui.homepage.HomePageActivity
@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
         setupAction()
         playAnimation()
 
-        val preferences = UserPreference.getInstance(dataStore)
+        val preferences = UserPreferencesRepositoryImpl.getInstance(dataStore)
         val dataStoreViewModel =
             ViewModelProvider(this, ViewModelFactory(preferences))[DataStoreViewModel::class.java]
 
@@ -66,11 +66,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.btnLogin.setOnClickListener {
-           binding.edEmailLogin.clearFocus()
+            binding.edEmailLogin.clearFocus()
             binding.edPasswordLogin.clearFocus()
 
             if (isDataValid()) {
-                val requestLogin = LoginData(
+                val requestLogin = LoginRequest(
                     email = binding.edEmailLogin.text.toString().trim(),
                     password = binding.edPasswordLogin.text.toString().trim()
                 )
@@ -124,8 +124,8 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             val user = viewModel.userlogin.value
             dataStoreViewModel.saveLoginSession(true)
-            dataStoreViewModel.saveToken(user?.loginResult!!.token)
-            dataStoreViewModel.saveName(user.loginResult.name)
+            dataStoreViewModel.saveToken(user?.loginResultDto!!.token)
+            dataStoreViewModel.saveName(user.loginResultDto.name)
         } else {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }

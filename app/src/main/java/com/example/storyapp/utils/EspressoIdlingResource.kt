@@ -1,4 +1,4 @@
-package com.example.storyapp
+package com.example.storyapp.utils
 
 import androidx.test.espresso.idling.CountingIdlingResource
 

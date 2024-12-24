@@ -1,4 +1,4 @@
-package com.example.storyapp.helper
+package com.example.storyapp.utils
 
 import android.content.Context
 import android.location.Address

@@ -19,21 +19,31 @@
 
             <TextView
                 android:id="@+id/tvAuthorName"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:paddingBottom="8dp"
+                android:foregroundGravity="left"
                 android:textColor="@color/black"
                 android:textStyle="normal"
-                app:layout_constraintEnd_toEndOf="@+id/cvListStory"
                 app:layout_constraintStart_toStartOf="@+id/cvListStory"
                 app:layout_constraintBottom_toTopOf="@+id/cvListStory"
                 tools:text="@string/user_name" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                tools:srcCompat="@drawable/ic_more_horizontal"
+                app:layout_constraintEnd_toEndOf="@id/cvListStory"
+                app:layout_constraintBottom_toTopOf="@+id/cvListStory"
+                />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvListStory"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/outline_border"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvAuthorName"
@@ -48,6 +58,15 @@
                     tools:srcCompat="@drawable/confused_person" />
 
             </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                tools:srcCompat="@drawable/ic_favorite_border"
+                app:layout_constraintStart_toStartOf="@id/cvListStory"
+                app:layout_constraintTop_toBottomOf="@+id/cvListStory"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

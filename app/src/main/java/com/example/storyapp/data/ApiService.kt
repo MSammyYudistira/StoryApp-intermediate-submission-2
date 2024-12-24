@@ -1,4 +1,4 @@
-package com.example.storyapp.data.remote.retrofit
+package com.example.storyapp.data
 
 import com.example.storyapp.data.remote.response.DetailResponse
 import com.example.storyapp.data.remote.response.LocationStoryResponse
@@ -8,7 +8,6 @@ import com.example.storyapp.data.remote.response.SignupData
 import com.example.storyapp.data.remote.response.StoryPagingResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

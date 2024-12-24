@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.storyapp.data.pref.UserPreference
+import com.example.storyapp.data.contract.UserPreferencesRepository
+import com.example.storyapp.data.local.pref.UserPreferencesRepositoryImpl
 import kotlinx.coroutines.launch
 
-class DataStoreViewModel(private val pref: UserPreference) : ViewModel() {
+class DataStoreViewModel(private val pref: UserPreferencesRepository) : ViewModel() {
 
     fun getLoginSession(): LiveData<Boolean> {
         return pref.getLoginSession().asLiveData()
