@@ -74,7 +74,6 @@ class PostStoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPostStoryBinding.inflate(layoutInflater)
-        enableEdgeToEdge()
         setContentView(binding.root)
         setupAction()
 
@@ -86,9 +85,9 @@ class PostStoryActivity : AppCompatActivity() {
             token = it
         }
 
-//        dataStoreViewModel.getName().observe(this) {
-//            binding.tvUser.text = StringBuilder(getString(R.string.post_as)).append(" ").append(it)
-//        }
+        dataStoreViewModel.getName().observe(this) {
+            binding.tvUser.text = "Share " + it + "\'s Story."
+        }
 
         viewModel.message.observe(this) {
             showToast(it)
@@ -99,6 +98,83 @@ class PostStoryActivity : AppCompatActivity() {
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+    }
+
+    private fun setupAction() {
+        binding.btnUploadYourStory.setOnClickListener {
+
+            if (getFile == null) {
+                showToast(resources.getString(R.string.warning_add_image))
+                return@setOnClickListener
+            }
+
+            val des = binding.edDescription.text.toString().trim()
+            if (des.isEmpty()) {
+                binding.edDescription.error = resources.getString(R.string.warning_add_desc)
+                return@setOnClickListener
+            }
+
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    val file = getFile as File
+
+                    var compressedFile: File? = null
+                    var compressedFileSize = file.length()
+
+                    // Compress the file until its size is less than or equal to 1MB
+                    while (compressedFileSize > 1 * 1024 * 1024) {
+                        compressedFile = withContext(Dispatchers.Default) {
+                            Compressor.compress(applicationContext, file)
+                        }
+                        compressedFileSize = compressedFile.length()
+                    }
+
+                    fileFinal = compressedFile ?: file
+
+                }
+
+                // use the upload file to upload to server
+                val requestImageFile =
+                    fileFinal.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                    "photo",
+                    fileFinal.name,
+                    requestImageFile
+                )
+
+                val desPart = des.toRequestBody("text/plain".toMediaType())
+
+                viewModel.upload(imageMultipart, desPart, latlng?.latitude, latlng?.longitude, token)
+            }
+        }
+
+        binding.btnCamera.setOnClickListener {
+            startTakePhoto()
+        }
+
+        binding.btnGallery.setOnClickListener {
+            startGallery()
+        }
+
+        binding.linearLayoutLocation.setOnClickListener {
+            val intent = Intent(this, PickLocationActivity::class.java)
+            resultLauncher.launch(intent)
+        }
+
+        binding.switchLocation.setOnClickListener {
+            if (binding.switchLocation.isChecked) {
+                requestPermissionLauncher
+            } else {
+                currentLagLng = null
+                Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.btnBack.setOnClickListener {
+            val intent = Intent(this, HomePageActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private var anyPhoto = false
@@ -205,76 +281,6 @@ class PostStoryActivity : AppCompatActivity() {
             }
         }
 
-    private fun setupAction() {
-        binding.btnUploadYourStory.setOnClickListener {
-
-            if (getFile == null) {
-                showToast(resources.getString(R.string.warning_add_image))
-                return@setOnClickListener
-            }
-
-            val des = binding.edDescription.text.toString().trim()
-            if (des.isEmpty()) {
-                binding.edDescription.error = resources.getString(R.string.warning_add_desc)
-                return@setOnClickListener
-            }
-
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    val file = getFile as File
-
-                    var compressedFile: File? = null
-                    var compressedFileSize = file.length()
-
-                    // Compress the file until its size is less than or equal to 1MB
-                    while (compressedFileSize > 1 * 1024 * 1024) {
-                        compressedFile = withContext(Dispatchers.Default) {
-                            Compressor.compress(applicationContext, file)
-                        }
-                        compressedFileSize = compressedFile.length()
-                    }
-
-                    fileFinal = compressedFile ?: file
-
-                }
-
-                // use the upload file to upload to server
-                val requestImageFile =
-                    fileFinal.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                    "photo",
-                    fileFinal.name,
-                    requestImageFile
-                )
-
-                val desPart = des.toRequestBody("text/plain".toMediaType())
-
-                viewModel.upload(imageMultipart, desPart, latlng?.latitude, latlng?.longitude, token)
-            }
-        }
-
-        binding.btnCamera.setOnClickListener {
-            startTakePhoto()
-        }
-
-        binding.btnGallery.setOnClickListener {
-            startGallery()
-        }
-
-        binding.linearLayoutLocation.setOnClickListener {
-            val intent = Intent(this, PickLocationActivity::class.java)
-            resultLauncher.launch(intent)
-        }
-
-        binding.switchLocation.setOnClickListener {
-            if (binding.switchLocation.isChecked) {
-                requestPermissionLauncher
-            } else {
-                currentLagLng = null
-                Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 
 //    fun getLocationUpdates(context:Context, callback: (Location?) -> Unit) = lifecycleScope.launch {
 //        if (ContextCompat.checkSelfPermission(

@@ -21,20 +21,24 @@
                 android:id="@+id/tvAuthorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:paddingBottom="8dp"
+                android:layout_marginStart="8dp"
                 android:foregroundGravity="left"
+                android:paddingBottom="8dp"
                 android:textColor="@color/black"
-                android:textStyle="normal"
-                app:layout_constraintStart_toStartOf="@+id/cvListStory"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/cvListStory"
+                app:layout_constraintStart_toStartOf="@+id/cvListStory"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/user_name" />
 
             <ImageView
                 android:id="@+id/ivIconMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginEnd="8dp"
+                android:paddingBottom="5dp"
+                android:clickable="false"
+                android:focusable="false"
                 tools:srcCompat="@drawable/ic_more_horizontal"
                 app:layout_constraintEnd_toEndOf="@id/cvListStory"
                 app:layout_constraintBottom_toTopOf="@+id/cvListStory"
@@ -44,7 +48,6 @@
                 android:id="@+id/cvListStory"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/outline_border"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvAuthorName"
@@ -56,7 +59,7 @@
                     android:layout_height="200dp"
                     android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
-                    tools:srcCompat="@drawable/confused_person" />
+                    tools:srcCompat="@drawable/ic_launcher_background" />
 
             </androidx.cardview.widget.CardView>
 

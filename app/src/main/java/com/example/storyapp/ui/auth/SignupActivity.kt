@@ -19,6 +19,7 @@ import com.example.storyapp.ui.homepage.HomePageActivity
 import com.example.storyapp.ui.viewmodel.DataStoreViewModel
 import com.example.storyapp.ui.viewmodel.MainViewModel
 import com.example.storyapp.ui.viewmodel.MainViewModelFactory
+import com.example.storyapp.ui.welcome.WelcomeActivity
 
 class SignupActivity : AppCompatActivity() {
 
@@ -100,7 +101,11 @@ class SignupActivity : AppCompatActivity() {
 
                 setMessage(this@SignupActivity, getString(R.string.error_login_input))
             }
+        }
 
+        binding.btnBack.setOnClickListener {
+            val intent = Intent(this, WelcomeActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -168,11 +173,6 @@ class SignupActivity : AppCompatActivity() {
         message: String,
     ) {
         if (message == "Account Created Successfully") {
-            Toast.makeText(
-                this,
-                resources.getString(R.string.account_created),
-                Toast.LENGTH_SHORT
-            ).show()
             val userLogin = LoginRequest(
                 binding.edEmailSignup.text.toString(),
                 binding.edPasswordSignup.text.toString()

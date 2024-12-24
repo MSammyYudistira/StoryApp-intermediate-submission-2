@@ -41,14 +41,14 @@ class StoryListAdapter :
                 }
 
 
-            binding.tvAuthorName.text = "From: ${data.name}"
+            binding.tvAuthorName.text = "${data.name}\'s Story."
             binding.ivIconMore
             Glide.with(itemView.context)
                 .load(data.photoUrl)
                 .into(binding.ivListStory)
 
             binding.ivIconMore.setImageResource(R.drawable.ic_more_horizontal)
-            binding.ivIconFavorite.setImageResource(if(binding.ivIconFavorite.isClickable) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_border)
+            binding.ivIconFavorite.setImageResource(R.drawable.ic_favorite_border)
 
             binding.root.setOnClickListener {
                 onItemClickCallback.onItemClicked(data)
@@ -69,10 +69,6 @@ class StoryListAdapter :
         holder.itemView.setOnClickListener {
             getItem(position)?.let { it1 -> onItemClickCallback.onItemClicked(it1) }
         }
-    }
-
-    private fun setMessage(context: Context, text: String) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

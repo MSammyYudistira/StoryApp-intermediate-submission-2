@@ -20,7 +20,7 @@
     <string name="user_name">Name: </string>
     <string name="date_created">Date: </string>
 
-    <string name="homepage"> Homepage</string>
+    <string name="homepage">Hello People!</string>
 
     <string name="btn_floating">to create new content</string>
     <string name="no_data">No data found</string>
@@ -28,8 +28,8 @@
     <string name="error_loading">Load data failed. because of: </string>
     <string name="share_button">Upload Your Story!</string>
     <string name="share_story_as">Share your story as: </string>
-    <string name="btn_camera">Camera</string>
-    <string name="btn_gallery">Gallery</string>
+    <string name="btn_camera">Use your Camera</string>
+    <string name="btn_gallery">Upload from Gallery</string>
     <string name="detail_title">%1$s\'s Story</string>
     <string name="choose_picture">Choose Picture</string>
     <string name="logout">Logout</string>
@@ -45,6 +45,8 @@
     <string name="logout_success">Logout Success</string>
     <string name="logout_confirmation">Are you sure you want to log out?</string>
     <string name="logout_cancel">Cancel</string>
+    <string name="hello_welcome">You can click on each list that has been uploaded by the user. Remember, the more and favorite icons are just decorations.</string>
+    <string name="btn_understand">I Understand!</string>
 
     <string name="name_empty">Name Is Empty</string>
     <string name="email_empty">Email Is Empty</string>
@@ -75,7 +77,5 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="full_name">Full name</string>
-
-    <string name="searchbar_hint">input text...</string>
 
 </resources>

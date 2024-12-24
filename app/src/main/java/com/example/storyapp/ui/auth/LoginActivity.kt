@@ -21,6 +21,7 @@ import com.example.storyapp.ui.homepage.HomePageActivity
 import com.example.storyapp.ui.viewmodel.DataStoreViewModel
 import com.example.storyapp.ui.viewmodel.MainViewModel
 import com.example.storyapp.ui.viewmodel.MainViewModelFactory
+import com.example.storyapp.ui.welcome.WelcomeActivity
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -78,6 +79,11 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 setMessage(this@LoginActivity, getString(R.string.error_login_input))
             }
+        }
+
+        binding.btnBack.setOnClickListener {
+            val intent = Intent(this, WelcomeActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.storyapp.databinding.ActivityWelcomeBinding
 import com.example.storyapp.ui.auth.LoginActivity
@@ -17,7 +18,6 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setupAction()
         playAnimation()
     }
@@ -42,7 +42,8 @@ class WelcomeActivity : AppCompatActivity() {
         val login = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(100)
         val signup = ObjectAnimator.ofFloat(binding.btnSignup, View.ALPHA, 1f).setDuration(100)
         val title = ObjectAnimator.ofFloat(binding.tvTitle, View.ALPHA, 1f).setDuration(100)
-        val desc = ObjectAnimator.ofFloat(binding.tvDescriptionWelcome, View.ALPHA, 1f).setDuration(100)
+        val desc =
+            ObjectAnimator.ofFloat(binding.tvDescriptionWelcome, View.ALPHA, 1f).setDuration(100)
 
         val together = AnimatorSet().apply {
             playTogether(login, signup)

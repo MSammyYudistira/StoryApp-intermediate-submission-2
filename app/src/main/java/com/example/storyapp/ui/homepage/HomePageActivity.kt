@@ -2,8 +2,8 @@ package com.example.storyapp.ui.homepage
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -41,8 +41,7 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomepageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
+        enableEdgeToEdge()
         setupAction()
 
         val layoutManager = LinearLayoutManager(this)
@@ -58,21 +57,16 @@ class HomePageActivity : AppCompatActivity() {
             setUserData(it)
         }
 
-        with(binding) {
-            searchView.setupWithSearchBar(searchBar)
-            searchView
-                .editText
-                .setOnEditorActionListener { view, i, keyEvent ->
-                    when(i) {
-                        EditorInfo.IME_ACTION_SEARCH -> {
-                            searchBar.setText(searchView.text)
-                            viewModel.getStories(searchView.text.toString())
-                            searchView.hide()
-                        }
-                    }
-                    false
-                }
-        }
+        val builder = AlertDialog.Builder(this)
+        val alert = builder.create()
+        builder
+            .setTitle(getString(R.string.homepage))
+            .setIcon(R.drawable.story_universe)
+            .setMessage(getString(R.string.hello_welcome))
+            .setPositiveButton(getString(R.string.btn_understand)) { _, _ ->
+                alert.cancel()
+            }
+            .show()
     }
 
     private fun setupAction() {

@@ -2,6 +2,7 @@ package com.example.storyapp.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.data.local.pref.UserPreferencesRepositoryImpl
@@ -20,6 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
 
         val pref = UserPreferencesRepositoryImpl.getInstance(dataStore)
         val loginViewModel =

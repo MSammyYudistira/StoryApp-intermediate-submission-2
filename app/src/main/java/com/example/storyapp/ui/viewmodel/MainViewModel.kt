@@ -27,9 +27,6 @@ class MainViewModel(private val remoteDataRepositoryImpl: RemoteDataRepository) 
 
     val userlogin: LiveData<LoginResponseDto> = remoteDataRepositoryImpl.userLogin
 
-    private val _location = MutableLiveData<LatLng?>()
-    val location: LiveData<LatLng?> get() = _location
-
     fun login(loginRequest: LoginRequest) {
         viewModelScope.launch {
             remoteDataRepositoryImpl.login(loginRequest)
