@@ -7,21 +7,30 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storyapp.R
-import com.example.storyapp.data.local.entity.ListStoryDetail
+import com.example.storyapp.data.local.pref.UserPreferencesRepositoryImpl
+import com.example.storyapp.data.local.room.entity.StoryEntity
 import com.example.storyapp.databinding.ActivityHomepageBinding
+import com.example.storyapp.ui.ViewModelFactory
 import com.example.storyapp.ui.adapter.LoadingStateAdapter
 import com.example.storyapp.ui.adapter.StoryListAdapter
 import com.example.storyapp.ui.auth.LoginActivity
 import com.example.storyapp.ui.auth.dataStore
 import com.example.storyapp.ui.detail.DetailActivity
+import com.example.storyapp.ui.map.MapActivity
 import com.example.storyapp.ui.story.PostStoryActivity
+import com.example.storyapp.ui.viewmodel.DataStoreViewModel
+import com.example.storyapp.ui.viewmodel.MainViewModel
+import com.example.storyapp.ui.viewmodel.MainViewModelFactory
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class HomePageActivity : AppCompatActivity() {
-    private val preference = UserPreference.getInstance(dataStore)
+    private val preference = UserPreferencesRepositoryImpl.getInstance(dataStore)
     private lateinit var binding: ActivityHomepageBinding
     private lateinit var token: String
     private val viewModel: MainViewModel by lazy {
@@ -32,6 +41,7 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomepageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         setupAction()
 
@@ -71,12 +81,19 @@ class HomePageActivity : AppCompatActivity() {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.getStories(token)
-            binding.swipeRefresh.isRefreshing = false
+            lifecycleScope.launch {
+                viewModel.getStories(token)
+                delay(1000)
+                binding.swipeRefresh.isRefreshing = false
+            }
         }
 
         binding.btnLogout.setOnClickListener {
             showAlertDialog()
+        }
+
+        binding.btnMap.setOnClickListener{
+            startActivity(Intent(this, MapActivity::class.java))
         }
     }
 
@@ -94,13 +111,13 @@ class HomePageActivity : AppCompatActivity() {
         }
 
         adapter.setOnItemClickCallback(object : StoryListAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: ListStoryDetail) {
+            override fun onItemClicked(data: StoryEntity) {
                 selectedStory(data)
             }
         })
     }
 
-    private fun selectedStory(data: ListStoryDetail) {
+    private fun selectedStory(data: StoryEntity) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_STORY, data)
         startActivity(intent)

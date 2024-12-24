@@ -6,10 +6,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
-import com.example.storyapp.data.local.entity.ListStoryDetail
+import com.example.storyapp.data.local.pref.UserPreferencesRepositoryImpl
+import com.example.storyapp.data.local.room.entity.StoryEntity
 import com.example.storyapp.databinding.ActivityMapBinding
-import com.example.storyapp.utils.LocationConverter
+import com.example.storyapp.ui.ViewModelFactory
 import com.example.storyapp.ui.auth.dataStore
+import com.example.storyapp.ui.viewmodel.DataStoreViewModel
+import com.example.storyapp.ui.viewmodel.MainViewModel
+import com.example.storyapp.ui.viewmodel.MainViewModelFactory
+import com.example.storyapp.utils.LocationConverter
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,7 +32,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
     }
     private val pref by lazy {
-        UserPreference.getInstance(dataStore)
+        UserPreferencesRepositoryImpl.getInstance(dataStore)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +71,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.pbMap.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun setMarker(data: List<ListStoryDetail>) {
+    private fun setMarker(data: List<StoryEntity>) {
         lateinit var locationZoom: LatLng
         data.forEach {
             if (it.lat != null && it.lon != null) {

@@ -1,17 +1,17 @@
 package com.example.storyapp.utils
 
-import com.example.storyapp.data.local.entity.ListStoryDetail
-import com.example.storyapp.data.remote.response.LoginData
-import com.example.storyapp.data.remote.response.LoginResponse
-import com.example.storyapp.data.remote.response.LoginResult
-import com.example.storyapp.data.remote.response.SignupData
+import com.example.storyapp.data.local.room.entity.StoryEntity
+import com.example.storyapp.data.remote.dto.request.LoginRequest
+import com.example.storyapp.data.remote.dto.request.SignUpRequest
+import com.example.storyapp.data.remote.dto.response.LoginResponseDto
+import com.example.storyapp.data.remote.dto.response.LoginResultDto
 
 object DataDummy {
 
-    fun generateDummyNewsEntity(): List<ListStoryDetail> {
-        val newsList = ArrayList<ListStoryDetail>()
+    fun generateDummyNewsEntity(): List<StoryEntity> {
+        val newsList = ArrayList<StoryEntity>()
         for (i in 0..5) {
-            val stories = ListStoryDetail(
+            val stories = StoryEntity(
                 "Title $i",
                 "this is name",
                 "This is description",
@@ -25,10 +25,10 @@ object DataDummy {
         return newsList
     }
 
-    fun generateDummyNewStories(): List<ListStoryDetail> {
-        val newsList = ArrayList<ListStoryDetail>()
+    fun generateDummyNewStories(): List<StoryEntity> {
+        val newsList = ArrayList<StoryEntity>()
         for (i in 0..5) {
-            val stories = ListStoryDetail(
+            val stories = StoryEntity(
                 "Title $i",
                 "this is name",
                 "This is description",
@@ -43,17 +43,17 @@ object DataDummy {
     }
 
 
-    fun generateDummyRequestLogin(): LoginData {
-        return LoginData("sammy123@gmail.com", "asd111111")
+    fun generateDummyRequestLogin(): LoginRequest {
+        return LoginRequest("sammy123@gmail.com", "asd111111")
     }
 
-    fun generateDummyResponseLogin(): LoginResponse {
-        val newLoginResult = LoginResult("123123", "sammy", "INI_TOKEN")
-        return LoginResponse(false, "Login successfully", newLoginResult)
+    fun generateDummyResponseLogin(): LoginResponseDto {
+        val newLoginResult = LoginResultDto("123123", "sammy", "INI_TOKEN")
+        return LoginResponseDto(false, "Login successfully", newLoginResult)
     }
 
-    fun generateDummyRequestRegister(): SignupData {
-        return SignupData("sammy", "yudis123@gmail.com", "qwerty123")
+    fun generateDummyRequestRegister(): SignUpRequest {
+        return SignUpRequest("sammy", "yudis123@gmail.com", "qwerty123")
     }
 
 }

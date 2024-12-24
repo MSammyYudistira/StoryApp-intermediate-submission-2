@@ -136,11 +136,7 @@ class PickLocationActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun updateButtonStyle(button: Button, isEnabled: Boolean) {
-        if (isEnabled) {
-            button.isEnabled = true
-        } else {
-            button.isEnabled = false
-        }
+        button.isEnabled = isEnabled
     }
 
     private fun setupAction() {

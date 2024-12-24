@@ -6,9 +6,10 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.example.storyapp.data.local.room.entity.StoryEntity
+import com.example.storyapp.data.ApiService
+import com.example.storyapp.data.local.room.StoryDatabase
 import com.example.storyapp.data.local.room.entity.KeyEntity
-import com.example.storyapp.data.remote.ApiService
+import com.example.storyapp.data.local.room.entity.StoryEntity
 
 @OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(

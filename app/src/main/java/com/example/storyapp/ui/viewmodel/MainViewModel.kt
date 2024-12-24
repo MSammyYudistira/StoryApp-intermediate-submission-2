@@ -1,6 +1,7 @@
 package com.example.storyapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
@@ -11,6 +12,7 @@ import com.example.storyapp.data.local.room.entity.StoryEntity
 import com.example.storyapp.data.remote.dto.request.LoginRequest
 import com.example.storyapp.data.remote.dto.request.SignUpRequest
 import com.example.storyapp.data.remote.dto.response.LoginResponseDto
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -24,6 +26,9 @@ class MainViewModel(private val remoteDataRepositoryImpl: RemoteDataRepository) 
     val isLoading: LiveData<Boolean> = remoteDataRepositoryImpl.isLoading
 
     val userlogin: LiveData<LoginResponseDto> = remoteDataRepositoryImpl.userLogin
+
+    private val _location = MutableLiveData<LatLng?>()
+    val location: LiveData<LatLng?> get() = _location
 
     fun login(loginRequest: LoginRequest) {
         viewModelScope.launch {

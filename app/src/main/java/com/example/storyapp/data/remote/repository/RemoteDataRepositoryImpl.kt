@@ -2,15 +2,20 @@ package com.example.storyapp.data.remote.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.*
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.example.storyapp.data.ApiConfig
+import com.example.storyapp.data.ApiService
 import com.example.storyapp.data.contract.RemoteDataRepository
+import com.example.storyapp.data.local.room.StoryDatabase
 import com.example.storyapp.data.local.room.entity.StoryEntity
 import com.example.storyapp.data.remote.dto.request.LoginRequest
 import com.example.storyapp.data.remote.dto.request.SignUpRequest
 import com.example.storyapp.data.remote.dto.response.LoginResponseDto
 import com.example.storyapp.data.remote.mediator.StoryRemoteMediator
-import com.example.storyapp.data.remote.ApiConfig
-import com.example.storyapp.data.remote.ApiService
 import com.example.storyapp.utils.wrapEspressoIdlingResource
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -37,8 +42,13 @@ class RemoteDataRepositoryImpl(
             val api = ApiConfig.getApiService().login(loginRequestAccount)
             _isLoading.value = false
             if (api.isSuccessful) {
+                try {
                 _userLogin.value = api.body()!!
-                _message.value = "Hello ${_userLogin.value!!.loginResultDto.name}!"
+                _message.value = "Hello ${_userLogin.value!!.loginResult.name}!"
+                }
+                catch(e:Exception) {
+                    _message.value = "Error Message: " + e.message
+                }
             } else {
                 when (api.code()) {
                     401 -> _message.value =

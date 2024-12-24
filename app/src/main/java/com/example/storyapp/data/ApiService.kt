@@ -1,11 +1,11 @@
 package com.example.storyapp.data
 
-import com.example.storyapp.data.remote.response.DetailResponse
-import com.example.storyapp.data.remote.response.LocationStoryResponse
-import com.example.storyapp.data.remote.response.LoginData
-import com.example.storyapp.data.remote.response.LoginResponse
-import com.example.storyapp.data.remote.response.SignupData
-import com.example.storyapp.data.remote.response.StoryPagingResponse
+import com.example.storyapp.data.remote.dto.request.LoginRequest
+import com.example.storyapp.data.remote.dto.request.SignUpRequest
+import com.example.storyapp.data.remote.dto.response.DetailResponseDto
+import com.example.storyapp.data.remote.dto.response.LocationStoryResponseDto
+import com.example.storyapp.data.remote.dto.response.LoginResponseDto
+import com.example.storyapp.data.remote.dto.response.StoryPagingResponseDto
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -18,18 +18,19 @@ import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface ApiService {
+
     @POST("register")
-    suspend fun userSignup(@Body requestSignup: SignupData): Response<DetailResponse>
+    suspend fun register(@Body requestSignup: SignUpRequest): Response<DetailResponseDto>
 
     @POST("login")
-    suspend fun userLogin(@Body requestLogin: LoginData): Response<LoginResponse>
+    suspend fun login(@Body requestLogin: LoginRequest): Response<LoginResponseDto>
 
     @GET("stories")
     suspend fun getLocationStory(
         @Query("size") size: Int? = null,
         @Query("location") location: Int? = 0,
         @Header("Authorization") token: String,
-    ): Response<LocationStoryResponse>
+    ): Response<LocationStoryResponseDto>
 
     @GET("stories")
     suspend fun getAllStories(
@@ -37,15 +38,15 @@ interface ApiService {
         @Query("size") size: Int? = null,
         @Query("location") location: Int? = 0,
         @Header("Authorization") token: String,
-    ): StoryPagingResponse
+    ): StoryPagingResponseDto
 
     @Multipart
     @POST("stories")
-     suspend fun uploadImage(
+    suspend fun upload(
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
         @Part("lat") lat: Float?,
         @Part("lon") lon: Float?,
         @Header("Authorization") token: String
-    ): Response<DetailResponse>
+    ): Response<DetailResponseDto>
 }

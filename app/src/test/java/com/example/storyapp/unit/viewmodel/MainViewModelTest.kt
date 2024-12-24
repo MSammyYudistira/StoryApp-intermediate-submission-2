@@ -7,8 +7,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.example.storyapp.data.local.entity.ListStoryDetail
-import com.example.storyapp.data.remote.repository.MainRepository
+import com.example.storyapp.data.contract.RemoteDataRepository
+import com.example.storyapp.data.local.room.entity.StoryEntity
 import com.example.storyapp.ui.viewmodel.MainViewModel
 import com.example.storyapp.utils.DataDummy
 import com.example.storyapp.utils.MainDispatcherRule
@@ -39,13 +39,13 @@ class MainViewModelTest {
     val mockitoRule = MockitoJUnit.rule()
 
     @Mock
-    private lateinit var mainRepository: MainRepository
+    private lateinit var remoteDataRepository: RemoteDataRepository
 
     private lateinit var mainViewModel: MainViewModel
 
     @Before
     fun setUp() {
-        mainViewModel = MainViewModel(mainRepository)
+        mainViewModel = MainViewModel(remoteDataRepository)
     }
 
     @OptIn(ExperimentalPagingApi::class)
@@ -55,7 +55,7 @@ class MainViewModelTest {
         val dummyPagingData = PagingData.from(DataDummy.generateDummyNewsEntity())
 
         // Mocking repository methods
-        `when`(mainRepository.getPagingStories(dummyToken)).thenReturn(MutableLiveData(dummyPagingData))
+        `when`(remoteDataRepository.getPagingStories(dummyToken)).thenReturn(MutableLiveData(dummyPagingData))
 
 
         // Act
@@ -78,10 +78,10 @@ class MainViewModelTest {
     @Test
     fun `when failed load story should return empty list`() = runTest {
         val dummyToken = "dummy-token"
-        val dummyPagingData = PagingData.from(emptyList<ListStoryDetail>())
+        val dummyPagingData = PagingData.from(emptyList<StoryEntity>())
 
         // Mocking repository methods to return empty data
-        `when`(mainRepository.getPagingStories(dummyToken)).thenReturn(MutableLiveData(dummyPagingData))
+        `when`(remoteDataRepository.getPagingStories(dummyToken)).thenReturn(MutableLiveData(dummyPagingData))
 
         // Act
         val actualStories = mainViewModel.getPagingStories(dummyToken).getOrAwaitValue()
@@ -98,12 +98,12 @@ class MainViewModelTest {
     }
 
     // DiffCallback for comparing ListStoryItem (or DetailStoryList)
-    class StoryDiffCallback : DiffUtil.ItemCallback<ListStoryDetail>() {
-        override fun areItemsTheSame(oldItem: ListStoryDetail, newItem: ListStoryDetail): Boolean {
+    class StoryDiffCallback : DiffUtil.ItemCallback<StoryEntity>() {
+        override fun areItemsTheSame(oldItem: StoryEntity, newItem: StoryEntity): Boolean {
             return oldItem.name == newItem.name // Adjust based on actual fields
         }
 
-        override fun areContentsTheSame(oldItem: ListStoryDetail, newItem: ListStoryDetail): Boolean {
+        override fun areContentsTheSame(oldItem: StoryEntity, newItem: StoryEntity): Boolean {
             return oldItem == newItem
         }
     }

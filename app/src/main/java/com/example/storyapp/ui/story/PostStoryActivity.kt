@@ -1,27 +1,44 @@
 package com.example.storyapp.ui.story
 
+import android.Manifest
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.storyapp.R
+import com.example.storyapp.data.local.pref.UserPreferencesRepositoryImpl
 import com.example.storyapp.databinding.ActivityPostStoryBinding
+import com.example.storyapp.ui.ViewModelFactory
 import com.example.storyapp.ui.auth.dataStore
 import com.example.storyapp.ui.homepage.HomePageActivity
 import com.example.storyapp.ui.map.PickLocationActivity
+import com.example.storyapp.ui.map.PickLocationActivity.Companion.DEFAULT_ZOOM
+import com.example.storyapp.ui.map.PickLocationActivity.Companion.currentLagLng
+import com.example.storyapp.ui.viewmodel.DataStoreViewModel
+import com.example.storyapp.ui.viewmodel.MainViewModel
+import com.example.storyapp.ui.viewmodel.MainViewModelFactory
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.Dispatchers
@@ -41,12 +58,14 @@ import java.util.Locale
 
 class PostStoryActivity : AppCompatActivity() {
 
+
     private lateinit var binding: ActivityPostStoryBinding
     private lateinit var token: String
 
     private var getFile: File? = null
     private lateinit var fileFinal: File
     private var latlng: LatLng? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
@@ -59,7 +78,7 @@ class PostStoryActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupAction()
 
-        val preferences = UserPreference.getInstance(dataStore)
+        val preferences = UserPreferencesRepositoryImpl.getInstance(dataStore)
         val dataStoreViewModel =
             ViewModelProvider(this, ViewModelFactory(preferences))[DataStoreViewModel::class.java]
 
@@ -67,9 +86,9 @@ class PostStoryActivity : AppCompatActivity() {
             token = it
         }
 
-        dataStoreViewModel.getName().observe(this) {
-            binding.tvUser.text = StringBuilder(getString(R.string.post_as)).append(" ").append(it)
-        }
+//        dataStoreViewModel.getName().observe(this) {
+//            binding.tvUser.text = StringBuilder(getString(R.string.post_as)).append(" ").append(it)
+//        }
 
         viewModel.message.observe(this) {
             showToast(it)
@@ -78,6 +97,8 @@ class PostStoryActivity : AppCompatActivity() {
         viewModel.isLoading.observe(this) {
             showLoading(it)
         }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     private var anyPhoto = false
@@ -244,6 +265,84 @@ class PostStoryActivity : AppCompatActivity() {
             val intent = Intent(this, PickLocationActivity::class.java)
             resultLauncher.launch(intent)
         }
+
+        binding.switchLocation.setOnClickListener {
+            if (binding.switchLocation.isChecked) {
+                requestPermissionLauncher
+            } else {
+                currentLagLng = null
+                Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+//    fun getLocationUpdates(context:Context, callback: (Location?) -> Unit) = lifecycleScope.launch {
+//        if (ContextCompat.checkSelfPermission(
+//                context,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+//            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+//                callback(location)
+//            }.addOnFailureListener {
+//                callback(null)
+//            }
+//        } else {
+//            callback(null)
+//        }
+//    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    getMyLastLocation()
+                }
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                    getMyLastLocation()
+                }
+                else -> {
+                    Toast.makeText(this, "Cannot get Permission", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+    private fun getMyLastLocation() {
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+            checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    Toast.makeText(this, "Location: " + location, Toast.LENGTH_SHORT).show()
+                    currentLagLng = LatLng(
+                        location.latitude,
+                        location.longitude
+                    )
+                } else {
+                    Toast.makeText(this, "NULL ERROR", Toast.LENGTH_SHORT).show()
+
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+            Toast.makeText(this, "ERROR GET LOCATION", Toast.LENGTH_SHORT).show()
+
+        }
+    }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onSupportNavigateUp(): Boolean {

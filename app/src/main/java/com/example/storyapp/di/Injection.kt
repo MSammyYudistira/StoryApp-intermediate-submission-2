@@ -1,4 +1,4 @@
-package com.example.storyapp.data.di
+package com.example.storyapp.di
 
 import android.content.Context
 import com.example.storyapp.data.ApiConfig

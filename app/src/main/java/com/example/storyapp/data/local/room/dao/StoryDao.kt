@@ -17,4 +17,5 @@ interface StoryDao {
 
     @Query("DELETE FROM stories")
     suspend fun deleteAll()
+
 }

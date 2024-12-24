@@ -124,8 +124,8 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             val user = viewModel.userlogin.value
             dataStoreViewModel.saveLoginSession(true)
-            dataStoreViewModel.saveToken(user?.loginResultDto!!.token)
-            dataStoreViewModel.saveName(user.loginResultDto.name)
+            dataStoreViewModel.saveToken(user?.loginResult!!.token)
+            dataStoreViewModel.saveName(user.loginResult.name)
         } else {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }

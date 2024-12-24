@@ -4,9 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.storyapp.data.local.pref.UserPreferencesRepositoryImpl
 import com.example.storyapp.databinding.ActivitySplashScreenBinding
+import com.example.storyapp.ui.ViewModelFactory
 import com.example.storyapp.ui.auth.dataStore
 import com.example.storyapp.ui.homepage.HomePageActivity
+import com.example.storyapp.ui.viewmodel.DataStoreViewModel
 import com.example.storyapp.ui.welcome.WelcomeActivity
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -18,7 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val pref = UserPreference.getInstance(dataStore)
+        val pref = UserPreferencesRepositoryImpl.getInstance(dataStore)
         val loginViewModel =
             ViewModelProvider(this, ViewModelFactory(pref))[DataStoreViewModel::class.java]
 

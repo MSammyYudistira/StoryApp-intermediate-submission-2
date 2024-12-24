@@ -10,10 +10,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
-import com.example.storyapp.data.remote.response.LoginData
-import com.example.storyapp.data.remote.response.SignupData
+import com.example.storyapp.data.local.pref.UserPreferencesRepositoryImpl
+import com.example.storyapp.data.remote.dto.request.LoginRequest
+import com.example.storyapp.data.remote.dto.request.SignUpRequest
 import com.example.storyapp.databinding.ActivitySignUpBinding
+import com.example.storyapp.ui.ViewModelFactory
 import com.example.storyapp.ui.homepage.HomePageActivity
+import com.example.storyapp.ui.viewmodel.DataStoreViewModel
+import com.example.storyapp.ui.viewmodel.MainViewModel
+import com.example.storyapp.ui.viewmodel.MainViewModelFactory
 
 class SignupActivity : AppCompatActivity() {
 
@@ -25,7 +30,6 @@ class SignupActivity : AppCompatActivity() {
         ViewModelProvider(this, MainViewModelFactory(this))[MainViewModel::class.java]
     }
 
-
     private lateinit var binding: ActivitySignUpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +37,7 @@ class SignupActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val pref = UserPreference.getInstance(dataStore)
+        val pref = UserPreferencesRepositoryImpl.getInstance(dataStore)
         val dataStoreViewModel =
             ViewModelProvider(this, ViewModelFactory(pref))[DataStoreViewModel::class.java]
         dataStoreViewModel.getLoginSession().observe(this) { sessionTrue ->
@@ -79,7 +83,7 @@ class SignupActivity : AppCompatActivity() {
             }
 
             if (binding.edFullNameSignup.isNameValid && binding.edEmailSignup.isEmailValid && binding.edPasswordSignup.isPasswordValid) {
-                val signupData = SignupData(
+                val signupData = SignUpRequest(
                     name = binding.edFullNameSignup.text.toString().trim(),
                     email = binding.edEmailSignup.text.toString().trim(),
                     password = binding.edPasswordSignup.text.toString().trim()
@@ -169,7 +173,7 @@ class SignupActivity : AppCompatActivity() {
                 resources.getString(R.string.account_created),
                 Toast.LENGTH_SHORT
             ).show()
-            val userLogin = LoginData(
+            val userLogin = LoginRequest(
                 binding.edEmailSignup.text.toString(),
                 binding.edPasswordSignup.text.toString()
             )
