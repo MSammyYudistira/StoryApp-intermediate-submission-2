@@ -1,5 +1,6 @@
 package com.example.storyapp.data.remote.repository
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -75,6 +76,7 @@ class StoryRemoteMediator(
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
 
         } catch (exception: Exception) {
+            Log.e("StoryRemoteMediator", "load: $exception")
             return MediatorResult.Error(exception)
         }
     }

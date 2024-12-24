@@ -37,11 +37,10 @@ class PickLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
         updateButtonStyle(binding.myLocation, false)
         updateButtonStyle(binding.locationPick, false)
-        setActions()
+        setupAction()
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(R.id.frMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -82,15 +81,12 @@ class PickLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         ) { permissions ->
             when {
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
-                    // Precise location access granted.
                     getMyLastLocation()
                 }
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
-                    // Only approximate location access granted.
                     getMyLastLocation()
                 }
                 else -> {
-                    // No location access granted.
                 }
             }
         }
@@ -141,19 +137,13 @@ class PickLocationActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun updateButtonStyle(button: Button, isEnabled: Boolean) {
         if (isEnabled) {
-            // Mengaktifkan style buttonEnabled
-            button.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-            button.setTextColor(ContextCompat.getColor(this, R.color.black))
             button.isEnabled = true
         } else {
-            // Mengaktifkan style buttonDisabled
-            button.setBackgroundColor(ContextCompat.getColor(this, R.color.buttonColor))
-            button.setTextColor(ContextCompat.getColor(this, R.color.wordColor))
             button.isEnabled = false
         }
     }
 
-    private fun setActions() {
+    private fun setupAction() {
         binding.myLocation.setOnClickListener {
             showAlertDialog(currentLagLng)
         }

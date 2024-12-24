@@ -12,7 +12,7 @@
         android:paddingBottom="10dp">
 
         <ImageView
-            android:id="@+id/imageDetailStory"
+            android:id="@+id/ivStoryDetailImage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -50,27 +50,27 @@
             tools:text="Deskripsi Story" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/ivSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/tvAddress"
-            app:layout_constraintStart_toStartOf="@+id/imageDetailStory"
-            app:layout_constraintTop_toTopOf="@+id/tvAddress"
+            app:layout_constraintBottom_toBottomOf="@+id/tvLocationAddress"
+            app:layout_constraintStart_toStartOf="@+id/ivStoryDetailImage"
+            app:layout_constraintTop_toTopOf="@+id/tvLocationAddress"
             android:contentDescription="@string/icon_map_pin"
             app:srcCompat="@drawable/ic_location_pin" />
 
         <TextView
-            android:id="@+id/tvAddress"
+            android:id="@+id/tvLocationAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            tools:text="No Location"
+            tools:text="No Location Address"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/imageDetailStory"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageDetailStory" />
+            app:layout_constraintEnd_toEndOf="@+id/ivStoryDetailImage"
+            app:layout_constraintStart_toEndOf="@+id/ivSignup"
+            app:layout_constraintTop_toBottomOf="@+id/ivStoryDetailImage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

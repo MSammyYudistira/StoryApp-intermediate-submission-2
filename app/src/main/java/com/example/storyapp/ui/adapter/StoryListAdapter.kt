@@ -10,7 +10,7 @@ import com.example.storyapp.data.local.entity.ListStoryDetail
 import com.example.storyapp.databinding.ItemStoryBinding
 
 class StoryListAdapter :
-    PagingDataAdapter<ListStoryDetail, StoryListAdapter.ListViewHolder>(StoryDetailDiffCallback()) {
+    PagingDataAdapter<ListStoryDetail, StoryListAdapter.ListViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -26,7 +26,7 @@ class StoryListAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ListStoryDetail) {
 
-            binding.authorStory.text = data.name
+            binding.authorStory.text = "From: ${data.name}"
             Glide.with(itemView.context)
                 .load(data.photoUrl)
                 .into(binding.imageStory)
@@ -52,18 +52,17 @@ class StoryListAdapter :
         }
     }
 
-    class StoryDetailDiffCallback : DiffUtil.ItemCallback<ListStoryDetail>() {
-        override fun areItemsTheSame(oldItem: ListStoryDetail, newItem: ListStoryDetail): Boolean {
-            return oldItem.id == newItem.id
-        }
 
-        override fun areContentsTheSame(
-            oldItem: ListStoryDetail,
-            newItem: ListStoryDetail
-        ): Boolean {
-            return oldItem == newItem
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryDetail>() {
+            override fun areItemsTheSame(oldItem: ListStoryDetail, newItem: ListStoryDetail): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: ListStoryDetail, newItem: ListStoryDetail): Boolean {
+                return oldItem == newItem
+            }
         }
     }
-
 
 }

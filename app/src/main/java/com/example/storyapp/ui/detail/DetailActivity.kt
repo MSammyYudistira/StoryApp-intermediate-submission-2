@@ -18,17 +18,14 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val story = intent.getParcelableExtra<ListStoryDetail>(EXTRA_STORY) as ListStoryDetail
-        setStory(story)
-
-        supportActionBar?.title = getString(R.string.detail_title, story.name)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupAction(story)
 
     }
 
-    private fun setStory(story: ListStoryDetail) {
+    private fun setupAction(story: ListStoryDetail) {
         binding.apply {
-            tvDetailName.text = story.name
-            tvDetailDesc.text = story.description
+            tvDetailName.text = "From: \n${story.name}"
+            tvDetailDesc.text = "Description: \n${story.description}"
         }
         Glide.with(this)
             .load(story.photoUrl)
@@ -41,11 +38,6 @@ class DetailActivity : AppCompatActivity() {
         )
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        finish()
-        return super.onSupportNavigateUp()
-    }
 
     companion object {
         const val EXTRA_STORY = "extra_story"

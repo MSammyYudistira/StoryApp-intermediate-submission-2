@@ -6,7 +6,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <fragment
-        android:id="@+id/map"
+        android:id="@+id/frMap"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -17,7 +17,7 @@
         tools:context=".ui.map.MapActivity" />
 
     <ProgressBar
-        android:id="@+id/progressBar4"
+        android:id="@+id/pbMap"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/map"
-        app:layout_constraintTop_toTopOf="@+id/map" />
+        app:layout_constraintStart_toStartOf="@+id/frMap"
+        app:layout_constraintTop_toTopOf="@+id/frMap" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,7 +25,7 @@ import com.example.storyapp.ui.viewmodel.MainViewModel
 import com.example.storyapp.ui.viewmodel.MainViewModelFactory
 
 class HomePageActivity : AppCompatActivity() {
-    private val pref by lazy {UserPreference.getInstance(dataStore) }
+    private val preference = UserPreference.getInstance(dataStore)
     private lateinit var binding: ActivityHomepageBinding
     private lateinit var token: String
     private val viewModel: MainViewModel by lazy {
@@ -37,7 +37,6 @@ class HomePageActivity : AppCompatActivity() {
         binding = ActivityHomepageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = resources.getString(R.string.homepage)
         setupAction()
 
         val layoutManager = LinearLayoutManager(this)
@@ -46,7 +45,7 @@ class HomePageActivity : AppCompatActivity() {
         binding.rvStories.addItemDecoration(itemDecoration)
 
         val dataStoreViewModel =
-            ViewModelProvider(this, ViewModelFactory(pref))[DataStoreViewModel::class.java]
+            ViewModelProvider(this, ViewModelFactory(preference))[DataStoreViewModel::class.java]
 
         dataStoreViewModel.getToken().observe(this) {
             token = it
@@ -84,20 +83,20 @@ class HomePageActivity : AppCompatActivity() {
 
         adapter.setOnItemClickCallback(object : StoryListAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ListStoryDetail) {
-                sendSelectedUser(data)
+                selectedStory(data)
             }
         })
     }
 
-    private fun sendSelectedUser(data: ListStoryDetail) {
+    private fun selectedStory(data: ListStoryDetail) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_STORY, data)
         startActivity(intent)
     }
 
-    private fun logout() {
+    private fun logoutStory() {
         val loginViewModel =
-            ViewModelProvider(this, ViewModelFactory(pref))[DataStoreViewModel::class.java]
+            ViewModelProvider(this, ViewModelFactory(preference))[DataStoreViewModel::class.java]
         loginViewModel.clearDataLogin()
         Toast.makeText(this, R.string.logout_success, Toast.LENGTH_SHORT).show()
         val intent = Intent(this, LoginActivity::class.java)
@@ -115,7 +114,7 @@ class HomePageActivity : AppCompatActivity() {
                 alert.cancel()
             }
             .setNegativeButton(getString(R.string.logout)) { _, _ ->
-                logout()
+                logoutStory()
             }
             .show()
     }

@@ -21,6 +21,10 @@
     <color name="buttonColor">#6A7073</color>
 
     <style name="ProgressBarStyle">
-        <item name="colorAccent">#C7F9CC</item>
+        <item name="colorAccent">#FF000000</item>
+    </style>
+
+    <style name="ProgressBarStyleWhite">
+        <item name="colorAccent">#FFFFFFFF</item>
     </style>
 </resources>

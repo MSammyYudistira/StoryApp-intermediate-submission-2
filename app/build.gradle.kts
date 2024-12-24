@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id ("kotlin-parcelize")
     id ("kotlin-kapt")
-    id ("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1" apply false
+    id ("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -21,6 +21,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_URL", "\"https://story-api.dicoding.dev/v1/\"")
+
     }
 
     buildTypes {
@@ -39,7 +40,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
     }
     buildFeatures {
         viewBinding = true
@@ -66,7 +66,6 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.androidx.core.testing)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 
     // Glide
     implementation(libs.glide)
@@ -80,7 +79,7 @@ dependencies {
     // Datastore Preferences
     implementation(libs.androidx.datastore.preferences)
 
-    implementation(libs.androidx.lifecycle.runtime.ktx) // untuk lifecycleScope
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
@@ -89,7 +88,7 @@ dependencies {
     implementation ("androidx.test.espresso:espresso-contrib:3.4.0")
     implementation ("androidx.test.espresso:espresso-idling-resource:3.4.0")
 
-    testImplementation ("androidx.arch.core:core-testing:2.1.0") // InstantTaskExecutorRule
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
 
     testImplementation ("org.mockito:mockito-core:3.12.4")
@@ -105,19 +104,22 @@ dependencies {
     androidTestImplementation ("androidx.arch.core:core-testing:2.1.0")
     androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
     androidTestImplementation ("androidx.test.espresso:espresso-intents:3.4.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
 
     //maps
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("com.google.android.gms:play-services-places:17.0.0")
-    implementation ("com.google.android.gms:play-services-maps:18.1.0")
+    implementation ("com.google.android.gms:play-services-maps:19.0.0")
 
 
     //Database
     implementation(libs.androidx.room.ktx)
-    implementation ("androidx.paging:paging-runtime-ktx:3.1.1")
+    implementation ("androidx.paging:paging-runtime-ktx:3.3.5")
     implementation ("androidx.room:room-paging:2.6.1")
     implementation ("androidx.room:room-runtime:2.6.1")
     kapt ("androidx.room:room-compiler:2.6.1")
+
+    testImplementation("net.bytebuddy:byte-buddy:1.15.11")
 
 
 }

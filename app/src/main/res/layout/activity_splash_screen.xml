@@ -8,7 +8,7 @@
     tools:context=".ui.splash.SplashScreenActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/ivSplash"
         android:layout_width="0dp"
         android:layout_height="250dp"
         tools:alpha="100"

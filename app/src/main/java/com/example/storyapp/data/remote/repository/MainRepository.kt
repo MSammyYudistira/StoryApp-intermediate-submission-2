@@ -35,74 +35,74 @@ class MainRepository(
     private val _userLogin = MutableLiveData<LoginResponse>()
     var userlogin: LiveData<LoginResponse> = _userLogin
 
-    fun getLoginResponse(loginDataAccount: LoginData) {
+    suspend fun getLoginResponse(loginDataAccount: LoginData) {
         wrapEspressoIdlingResource {
             _isLoading.value = true
             val api = ApiConfig.getApiService().userLogin(loginDataAccount)
-            api.enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-                    _isLoading.value = false
-                    val responseBody = response.body()
-
-                    if (response.isSuccessful) {
-                        _userLogin.value = responseBody!!
+//            api.enqueue(object : Callback<LoginResponse> {
+//                override fun onResponse(
+//                    call: Call<LoginResponse>,
+//                    response: Response<LoginResponse>
+//                ) {
+//                    _isLoading.value = false
+//                    val responseBody = response.body()
+//
+                    if (api.isSuccessful) {
+                        _userLogin.value = api.body()!!
                         _message.value = "Hello ${_userLogin.value!!.loginResult.name}!"
                     } else {
-                        when (response.code()) {
+                        when (api.code()) {
                             401 -> _message.value =
-                                "Email atau password yang anda masukan salah, silahkan coba lagi"
+                                "Your Email or Password Incorrect, Please Try Again"
                             408 -> _message.value =
-                                "Koneksi internet anda lambat, silahkan coba lagi"
-                            else -> _message.value = "Pesan error: " + response.message()
+                                "Your Connection Internet Running Slow, Please Try Again"
+                            else -> _message.value = "Error Message: " + api.message()
                         }
                     }
-                }
+//                }
 
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    _isLoading.value = false
-                    _message.value = "Pesan error: " + t.message.toString()
-                }
+//                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+//                    _isLoading.value = false
+//                    _message.value = "Pesan error: " + t.message.toString()
+//                }
 
-            })
+            }
         }
     }
 
-    fun getResponseRegister(registDataUser: SignupData) {
+    suspend fun getResponseRegister(registDataUser: SignupData) {
         wrapEspressoIdlingResource {
             _isLoading.value = true
             val api = ApiConfig.getApiService().userSignup(registDataUser)
-            api.enqueue(object : Callback<DetailResponse> {
-                override fun onResponse(
-                    call: Call<DetailResponse>,
-                    response: Response<DetailResponse>
-                ) {
+//            api.enqueue(object : Callback<DetailResponse> {
+//                override fun onResponse(
+//                    call: Call<DetailResponse>,
+//                    response: Response<DetailResponse>
+//                ) {
                     _isLoading.value = false
-                    if (response.isSuccessful) {
-                        _message.value = "Yeay akun berhasil dibuat"
+                    if (api.isSuccessful) {
+                        _message.value = "Account Created Successfully"
                     } else {
-                        when (response.code()) {
+                        when (api.code()) {
                             400 -> _message.value =
-                                "Email yang anda masukan sudah terdaftar, silahkan coba lagi"
+                                "Email Already Taken, Please Login With Different Email"
                             408 -> _message.value =
-                                "Koneksi internet anda lambat, silahkan coba lagi"
-                            else -> _message.value = "Pesan error: " + response.message()
+                                "Your Connection Internet Running Slow, Please Try Again"
+                            else -> _message.value = "Message error: " + api.message()
                         }
                     }
-                }
+//                }
 
-                override fun onFailure(call: Call<DetailResponse>, t: Throwable) {
-                    _isLoading.value = false
-                    _message.value = "Pesan error: " + t.message.toString()
-                }
+//                override fun onFailure(call: Call<DetailResponse>, t: Throwable) {
+//                    _isLoading.value = false
+//                    _message.value = "Message error: " + t.message.toString()
+//                }
 
-            })
+
         }
     }
 
-    fun upload(
+    suspend fun upload(
         photo: MultipartBody.Part,
         des: RequestBody,
         lat: Double?,
@@ -136,7 +136,7 @@ class MainRepository(
         })
     }
 
-    fun getStories(token: String) {
+    suspend fun getStories(token: String) {
         _isLoading.value = true
         val api = ApiConfig.getApiService().getLocationStory(32, 1, "Bearer $token")
         api.enqueue(object : Callback<LocationStoryResponse> {
@@ -177,5 +177,3 @@ class MainRepository(
         )
         return pager.liveData
     }
-
-}

@@ -11,6 +11,7 @@ import com.example.storyapp.data.remote.repository.MainRepository
 import com.example.storyapp.data.remote.response.LoginData
 import com.example.storyapp.data.remote.response.LoginResponse
 import com.example.storyapp.data.remote.response.SignupData
+import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -25,11 +26,15 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
     val userlogin: LiveData<LoginResponse> = mainRepository.userlogin
 
     fun login(loginData: LoginData) {
+        viewModelScope.launch {
         mainRepository.getLoginResponse(loginData)
     }
+    }
 
-    fun register(signupData: SignupData) {
+    fun signup(signupData: SignupData) {
+        viewModelScope.launch {
         mainRepository.getResponseRegister(signupData)
+    }
     }
 
     fun upload(
@@ -39,7 +44,9 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         lng: Double?,
         token: String
     ) {
+        viewModelScope.launch {
         mainRepository.upload(photo, des, lat, lng, token)
+    }
     }
 
     @ExperimentalPagingApi

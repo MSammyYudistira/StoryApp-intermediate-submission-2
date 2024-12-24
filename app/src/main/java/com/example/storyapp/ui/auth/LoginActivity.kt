@@ -44,17 +44,17 @@ class LoginActivity : AppCompatActivity() {
         val dataStoreViewModel =
             ViewModelProvider(this, ViewModelFactory(preferences))[DataStoreViewModel::class.java]
 
-        dataStoreViewModel.getLoginSession().observe(this) { sessionTrue ->
-            if (sessionTrue) {
+        dataStoreViewModel.getLoginSession().observe(this) {
+            if (it) {
                 val intent = Intent(this@LoginActivity, HomePageActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }
         }
 
-        viewModel.message.observe(this) { message ->
+        viewModel.message.observe(this) {
             responseLogin(
-                message,
+                it,
                 dataStoreViewModel
             )
         }
@@ -66,11 +66,14 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.loginButton.setOnClickListener {
-            val email = binding.edLoginEmail.text.toString()
-            val password = binding.edLoginPassword.text.toString()
+           binding.edLoginEmail.clearFocus()
+            binding.edLoginPassword.clearFocus()
 
             if (isDataValid()) {
-                val requestLogin = LoginData(email, password)
+                val requestLogin = LoginData(
+                    email = binding.edLoginEmail.text.toString().trim(),
+                    password = binding.edLoginPassword.text.toString().trim()
+                )
                 viewModel.login(requestLogin)
             } else {
                 setMessage(this@LoginActivity, getString(R.string.error_login_input))

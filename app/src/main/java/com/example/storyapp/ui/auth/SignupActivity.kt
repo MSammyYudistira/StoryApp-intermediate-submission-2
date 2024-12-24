@@ -5,10 +5,8 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyapp.R
@@ -39,9 +37,6 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        supportActionBar?.title = resources.getString(R.string.create_account)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val pref = UserPreference.getInstance(dataStore)
         val dataStoreViewModel =
@@ -83,30 +78,30 @@ class SignupActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
             binding.apply {
-                val name = binding.edSignupName.text.toString().trim()
-                val email = binding.edSignupEmail.text.toString().trim()
-                val password = binding.edSignupPassword.text.toString().trim()
-
-                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(name) || TextUtils.isEmpty(
-                        password
-                    )
-                ) {
-                    setMessage(this@SignupActivity, getString(R.string.error_signup_input))
-                } else {
-
-                    AlertDialog.Builder(this@SignupActivity).apply {
-                        setTitle("Yeah!")
-                        setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan belajar coding.")
-                        setPositiveButton("Lanjut") { _, _ ->
-                            finish()
-                        }
-                        create()
-                        show()
-                    }
-                    val signupData = SignupData(name, email, password)
-                    signupViewModel.register(signupData)
-                }
+                edSignupName.clearFocus()
+                edSignupEmail.clearFocus()
+                edSignupPassword.clearFocus()
             }
+
+            if (binding.edSignupName.isNameValid && binding.edSignupEmail.isEmailValid && binding.edSignupPassword.isPasswordValid) {
+                val signupData = SignupData(
+                    name = binding.edSignupName.text.toString().trim(),
+                    email = binding.edSignupEmail.text.toString().trim(),
+                    password = binding.edSignupPassword.text.toString().trim()
+                )
+                signupViewModel.signup(signupData)
+
+            } else {
+                if (!binding.edSignupName.isNameValid) binding.edSignupName.error =
+                    resources.getString(R.string.nameNone)
+                if (!binding.edSignupEmail.isEmailValid) binding.edSignupEmail.error =
+                    resources.getString(R.string.emailNone)
+                if (!binding.edSignupPassword.isPasswordValid) binding.edSignupPassword.error =
+                    resources.getString(R.string.passwordNone)
+
+                setMessage(this@SignupActivity, getString(R.string.error_login_input))
+            }
+
         }
     }
 
@@ -173,7 +168,7 @@ class SignupActivity : AppCompatActivity() {
     private fun signupResponse(
         message: String,
     ) {
-        if (message == "Yeay akun berhasil dibuat") {
+        if (message == "Account Created Successfully") {
             Toast.makeText(
                 this,
                 resources.getString(R.string.accountSuccessCreated),
@@ -185,7 +180,7 @@ class SignupActivity : AppCompatActivity() {
             )
             loginViewModel.login(userLogin)
         } else {
-            if (message.contains("Email yang anda masukan sudah terdaftar")) {
+            if (message.contains("The email you entered is already registered, please change your email.")) {
                 binding.edSignupEmail.setErrorMessage(
                     resources.getString(R.string.email_taken),
                     binding.edSignupEmail.text.toString()

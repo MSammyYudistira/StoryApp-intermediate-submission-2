@@ -6,8 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.homepage.HomePageActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WELCOME"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/swipeRefresh" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/pullRefresh"
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,11 +45,11 @@
         android:src="@drawable/ic_logout"
         app:maxImageSize="22dp"
         app:fabCustomSize="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnFloating"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddStory"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnFloating"
+        android:id="@+id/btnAddStory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"

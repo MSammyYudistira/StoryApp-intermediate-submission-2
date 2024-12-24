@@ -52,3 +52,4 @@ data class StoryPagingResponse(
     @field:SerializedName("listStory")
     var listStory: List<ListStoryDetail>
 )
+

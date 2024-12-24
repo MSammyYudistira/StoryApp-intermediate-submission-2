@@ -8,61 +8,62 @@
     tools:context=".ui.map.PickLocationActivity">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+        android:id="@+id/cardViewPickLocation"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/myLocation"
+        app:layout_constraintBottom_toTopOf="@+id/tvHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
 
         <fragment
-            android:id="@+id/map"
+            android:id="@+id/frMap"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".userinterface.PickLocationActivity" />
+            tools:context=".ui.map.PickLocationActivity" />
 
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/myLocation"
+        android:id="@+id/btnMyLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/purple_500"
         android:text="@string/useMyLocation"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/locationPick"
-        app:layout_constraintEnd_toEndOf="@+id/cardView2"
-        app:layout_constraintStart_toStartOf="@+id/cardView2" />
+        app:layout_constraintBottom_toTopOf="@+id/btnPickLocation"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewPickLocation"
+        app:layout_constraintStart_toStartOf="@+id/cardViewPickLocation" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/pickLocation"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/cardView2"
-        app:layout_constraintStart_toStartOf="@+id/cardView2" />
+        app:layout_constraintBottom_toTopOf="@id/btnMyLocation"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewPickLocation"
+        app:layout_constraintStart_toStartOf="@+id/cardViewPickLocation" />
 
     <Button
-        android:id="@+id/locationPick"
+        android:id="@+id/btnPickLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:backgroundTint="@color/purple_500"
         android:text="@string/usePickLocation"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="@+id/cardView2"
-        app:layout_constraintStart_toStartOf="@+id/cardView2" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewPickLocation"
+        app:layout_constraintStart_toStartOf="@+id/cardViewPickLocation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

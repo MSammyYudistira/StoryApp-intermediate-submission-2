@@ -1,313 +1,118 @@
 package com.example.storyapp.unit.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.*
+import androidx.paging.AsyncPagingDataDiffer
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingData
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.example.storyapp.data.local.entity.ListStoryDetail
-import com.example.storyapp.data.remote.response.LoginResponse
-import com.example.storyapp.ui.adapter.StoryListAdapter
+import com.example.storyapp.data.remote.repository.MainRepository
 import com.example.storyapp.ui.viewmodel.MainViewModel
-import com.example.storyapp.utils.DataDummy.generateDummyNewStories
-import com.example.storyapp.utils.DataDummy.generateDummyRequestLogin
-import com.example.storyapp.utils.DataDummy.generateDummyRequestRegister
-import com.example.storyapp.utils.DataDummy.generateDummyResponseLogin
+import com.example.storyapp.utils.DataDummy
 import com.example.storyapp.utils.MainDispatcherRule
 import com.example.storyapp.utils.getOrAwaitValue
-import com.google.android.gms.maps.model.LatLng
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import org.junit.Assert
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
-import org.mockito.junit.MockitoJUnitRunner
-import java.io.File
+import org.mockito.junit.MockitoJUnit
 
-@RunWith(MockitoJUnitRunner::class)
+@ExperimentalCoroutinesApi
 class MainViewModelTest {
-    @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
 
-    @ExperimentalCoroutinesApi
     @get:Rule
-    var mainDispatcherRule = MainDispatcherRule()
+    val instantExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
+    @get:Rule
+    val mockitoRule = MockitoJUnit.rule()
+
+    @Mock
+    private lateinit var mainRepository: MainRepository
 
     private lateinit var mainViewModel: MainViewModel
 
-    @Mock
-    private var mockFile = File("fileName")
-
     @Before
     fun setUp() {
-        mainViewModel = Mockito.mock(MainViewModel::class.java)
+        mainViewModel = MainViewModel(mainRepository)
     }
 
-    // upload
+    @OptIn(ExperimentalPagingApi::class)
     @Test
-    fun `when message upload should return the right data and not null`() {
-        val expectedRegisterMessage = MutableLiveData<String>()
-        expectedRegisterMessage.value = "Story Uploaded"
+    fun `when successfully load story should return data`() = runTest {
+        val dummyToken = "dummy-token"
+        val dummyPagingData = PagingData.from(DataDummy.generateDummyNewsEntity())
 
-        `when`(mainViewModel.message).thenReturn(expectedRegisterMessage)
+        // Mocking repository methods
+        `when`(mainRepository.getPagingStories(dummyToken)).thenReturn(MutableLiveData(dummyPagingData))
 
-        val actualRegisterMessage = mainViewModel.message.getOrAwaitValue()
 
-        Mockito.verify(mainViewModel).message
-        Assert.assertNotNull(actualRegisterMessage)
-        Assert.assertEquals(expectedRegisterMessage.value, actualRegisterMessage)
-    }
-
-    @Test
-    fun `when loading upload should return the right data and not null`() {
-        val expectedLoadingData = MutableLiveData<Boolean>()
-        expectedLoadingData.value = true
-
-        `when`(mainViewModel.isLoading).thenReturn(expectedLoadingData)
-
-        val actualLoading = mainViewModel.isLoading.getOrAwaitValue()
-
-        Mockito.verify(mainViewModel).isLoading
-        Assert.assertNotNull(actualLoading)
-        Assert.assertEquals(expectedLoadingData.value, actualLoading)
-    }
-
-    @Test
-    fun `verify upload function is working`() {
-        val expectedUploadMessage = MutableLiveData<String>()
-        expectedUploadMessage.value = "Story Uploaded"
-
-        val requestImageFile = mockFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-            "photo",
-            "fileName",
-            requestImageFile
-        )
-        val description: RequestBody = "ini description".toRequestBody("text/plain".toMediaType())
-        val token = "ini token"
-        val latlng = LatLng(1.1, 1.1)
-
-        mainViewModel.upload(imageMultipart, description, latlng.latitude, latlng.longitude, token)
-        Mockito.verify(mainViewModel).upload(
-            imageMultipart,
-            description,
-            latlng.latitude,
-            latlng.longitude,
-            token
-        )
-
-        `when`(mainViewModel.message).thenReturn(expectedUploadMessage)
-
-        val actualUploadMessage = mainViewModel.message.getOrAwaitValue()
-        Mockito.verify(mainViewModel).message
-        Assert.assertNotNull(actualUploadMessage)
-        Assert.assertEquals(expectedUploadMessage.value, actualUploadMessage)
-    }
-
-    // get story
-    @OptIn(ExperimentalPagingApi::class, ExperimentalCoroutinesApi::class)
-    @Test
-    fun `verify getStory is working and Should Not Return Null`() = runTest {
-        val noopListUpdateCallback = NoopListCallback()
-        val dummyStory = generateDummyNewStories()
-        val data = PagedTestDataSources.snapshot(dummyStory)
-        val story = MutableLiveData<PagingData<ListStoryDetail>>()
-        val token = "ini token"
-        story.value = data
-        `when`(mainViewModel.getPagingStories(token)).thenReturn(story)
-        val actualData = mainViewModel.getPagingStories(token).getOrAwaitValue()
+        // Act
+        val actualStories = mainViewModel.getPagingStories(dummyToken).getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
-            diffCallback = StoryListAdapter.StoryDetailDiffCallback(),
-            updateCallback = noopListUpdateCallback,
-            mainDispatcher = Dispatchers.Unconfined,
-            workerDispatcher = Dispatchers.Unconfined,
+            diffCallback = StoryDiffCallback(),
+            updateCallback = NoopListCallback(),
+            workerDispatcher = Dispatchers.Main
         )
-        differ.submitData(actualData)
+        differ.submitData(actualStories)
 
-        advanceUntilIdle()
-        Mockito.verify(mainViewModel).getPagingStories(token)
-        Assert.assertNotNull(differ.snapshot())
-        assertEquals(dummyStory.size, differ.snapshot().size)
-        assertEquals(dummyStory[0].name, differ.snapshot()[0]?.name)
+        // Assert
+        assertNotNull(differ.snapshot())
+        assertEquals(DataDummy.generateDummyNewsEntity().size, differ.snapshot().size)
+        assertEquals(DataDummy.generateDummyNewsEntity()[0], differ.snapshot()[0])
     }
 
-    @OptIn(ExperimentalPagingApi::class, ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalPagingApi::class)
     @Test
-    fun `when GetStory is Empty Should Not return Null`() = runTest {
-        val noopListUpdateCallback = NoopListCallback()
-        val data = PagedTestDataSources.snapshot(listOf())
-        val story = MutableLiveData<PagingData<ListStoryDetail>>()
-        val token = "ini token"
-        story.value = data
-        `when`(mainViewModel.getPagingStories(token)).thenReturn(story)
-        val actualData = mainViewModel.getPagingStories(token).getOrAwaitValue()
+    fun `when failed load story should return empty list`() = runTest {
+        val dummyToken = "dummy-token"
+        val dummyPagingData = PagingData.from(emptyList<ListStoryDetail>())
+
+        // Mocking repository methods to return empty data
+        `when`(mainRepository.getPagingStories(dummyToken)).thenReturn(MutableLiveData(dummyPagingData))
+
+        // Act
+        val actualStories = mainViewModel.getPagingStories(dummyToken).getOrAwaitValue()
 
         val differ = AsyncPagingDataDiffer(
-            diffCallback = StoryListAdapter.StoryDetailDiffCallback(),
-            updateCallback = noopListUpdateCallback,
-            mainDispatcher = Dispatchers.Unconfined,
-            workerDispatcher = Dispatchers.Unconfined,
+            diffCallback = StoryDiffCallback(),
+            updateCallback = NoopListCallback(),
+            workerDispatcher = Dispatchers.Main
         )
-        differ.submitData(actualData)
+        differ.submitData(actualStories)
 
-        advanceUntilIdle()
-        Mockito.verify(mainViewModel).getPagingStories(token)
-        Assert.assertNotNull(differ.snapshot())
-        Assert.assertTrue(differ.snapshot().isEmpty())
-        print(differ.snapshot().size)
+        // Assert that the snapshot contains no items
+        Assert.assertEquals(0, differ.snapshot().size)
     }
 
+    // DiffCallback for comparing ListStoryItem (or DetailStoryList)
+    class StoryDiffCallback : DiffUtil.ItemCallback<ListStoryDetail>() {
+        override fun areItemsTheSame(oldItem: ListStoryDetail, newItem: ListStoryDetail): Boolean {
+            return oldItem.name == newItem.name // Adjust based on actual fields
+        }
+
+        override fun areContentsTheSame(oldItem: ListStoryDetail, newItem: ListStoryDetail): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    // No-op ListUpdateCallback for AsyncPagingDataDiffer
     class NoopListCallback : ListUpdateCallback {
-        override fun onChanged(position: Int, count: Int, payload: Any?) {}
-        override fun onMoved(fromPosition: Int, toPosition: Int) {}
         override fun onInserted(position: Int, count: Int) {}
         override fun onRemoved(position: Int, count: Int) {}
+        override fun onMoved(fromPosition: Int, toPosition: Int) {}
+        override fun onChanged(position: Int, count: Int, payload: Any?) {}
     }
-
-    class PagedTestDataSources private constructor() :
-        PagingSource<Int, LiveData<List<ListStoryDetail>>>() {
-        companion object {
-            fun snapshot(items: List<ListStoryDetail>): PagingData<ListStoryDetail> {
-                return PagingData.from(items)
-            }
-        }
-
-        override fun getRefreshKey(state: PagingState<Int, LiveData<List<ListStoryDetail>>>): Int {
-            return 0
-        }
-
-        override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LiveData<List<ListStoryDetail>>> {
-            return LoadResult.Page(emptyList(), 0, 1)
-        }
-    }
-
-    // login
-    @Test
-    fun `when login message should return the right data and not null`() {
-        val expectedLoginMessage = MutableLiveData<String>()
-        expectedLoginMessage.value = "Login Successfully"
-
-        `when`(mainViewModel.message).thenReturn(expectedLoginMessage)
-
-        val actualMessage = mainViewModel.message.getOrAwaitValue()
-
-        Mockito.verify(mainViewModel).message
-        Assert.assertNotNull(actualMessage)
-        Assert.assertEquals(expectedLoginMessage.value, actualMessage)
-    }
-
-    @Test
-    fun `when login loading state should return the right data and not null`() {
-        val expectedLoadingData = MutableLiveData<Boolean>()
-        expectedLoadingData.value = true
-
-        `when`(mainViewModel.isLoading).thenReturn(expectedLoadingData)
-
-        val actualLoading = mainViewModel.isLoading.getOrAwaitValue()
-
-        Mockito.verify(mainViewModel).isLoading
-        Assert.assertNotNull(actualLoading)
-        Assert.assertEquals(expectedLoadingData.value, actualLoading)
-    }
-
-    @Test
-    fun `when login should return the right login user data and not null`() {
-        val dummyResponselogin = generateDummyResponseLogin()
-
-        val expectedLogin = MutableLiveData<LoginResponse>()
-        expectedLogin.value = dummyResponselogin
-
-        `when`(mainViewModel.userlogin).thenReturn(expectedLogin)
-
-        val actualLoginResponse = mainViewModel.userlogin.getOrAwaitValue()
-
-        Mockito.verify(mainViewModel).userlogin
-        Assert.assertNotNull(actualLoginResponse)
-        assertEquals(expectedLogin.value, actualLoginResponse)
-    }
-
-    @Test
-    fun `verify getResponseLogin function is working`() {
-        val dummyRequestLogin = generateDummyRequestLogin()
-        val dummyResponseLogin = generateDummyResponseLogin()
-
-        val expectedResponseLogin = MutableLiveData<LoginResponse>()
-        expectedResponseLogin.value = dummyResponseLogin
-
-        mainViewModel.login(dummyRequestLogin)
-
-        Mockito.verify(mainViewModel).login(dummyRequestLogin)
-
-        `when`(mainViewModel.userlogin).thenReturn(expectedResponseLogin)
-
-        val actualData = mainViewModel.userlogin.getOrAwaitValue()
-
-        Mockito.verify(mainViewModel).userlogin
-        Assert.assertNotNull(expectedResponseLogin)
-        assertEquals(expectedResponseLogin.value, actualData)
-    }
-
-    // register
-    @Test
-    fun `when register message should return the right data and not null`() {
-        val expectedRegisterMessage = MutableLiveData<String>()
-        expectedRegisterMessage.value = "User Created"
-
-        `when`(mainViewModel.message).thenReturn(expectedRegisterMessage)
-
-        val actualRegisterMessage = mainViewModel.message.getOrAwaitValue()
-
-        Mockito.verify(mainViewModel).message
-        Assert.assertNotNull(actualRegisterMessage)
-        Assert.assertEquals(expectedRegisterMessage.value, actualRegisterMessage)
-    }
-
-    @Test
-    fun `when register loading state should return the right data and not null`() {
-        val expectedLoadingData = MutableLiveData<Boolean>()
-        expectedLoadingData.value = true
-
-        `when`(mainViewModel.isLoading).thenReturn(expectedLoadingData)
-
-        val actualLoading = mainViewModel.isLoading.getOrAwaitValue()
-
-        Mockito.verify(mainViewModel).isLoading
-        Assert.assertNotNull(actualLoading)
-        Assert.assertEquals(expectedLoadingData.value, actualLoading)
-    }
-
-    @Test
-    fun `verify getResponseRegister function is working`() {
-        val dummyRequestRegister = generateDummyRequestRegister()
-        val expectedRegisterMessage = MutableLiveData<String>()
-        expectedRegisterMessage.value = "User Created"
-
-        mainViewModel.register(dummyRequestRegister)
-
-        Mockito.verify(mainViewModel).register(dummyRequestRegister)
-
-        `when`(mainViewModel.message).thenReturn(expectedRegisterMessage)
-
-        val actualData = mainViewModel.message.getOrAwaitValue()
-
-        Mockito.verify(mainViewModel).message
-        Assert.assertNotNull(actualData)
-        Assert.assertEquals(expectedRegisterMessage.value, actualData)
-    }
-
 }

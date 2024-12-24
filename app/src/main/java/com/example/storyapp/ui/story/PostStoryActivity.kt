@@ -59,12 +59,10 @@ class PostStoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityPostStoryBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         setupAction()
-
-        supportActionBar?.title = resources.getString(R.string.post_users)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val preferences = UserPreference.getInstance(dataStore)
         val dataStoreViewModel =
